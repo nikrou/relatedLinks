@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html>
+  <head>
+    <title>Liens relatifs</title>
+  </head>
+  <body>
+    <p>Ce plugin vous permet d'ajouter des liens relatifs à un billet. L'idée est d'inciter le lecteur à poursuivre sa lecture sur le blog avec des billets succeptibles de l'intéresser.</p>
+
+    <h3>Mode d'emploi</h3>
+    <ol>
+      <li>Activer le plugin (onglet Paramètres)</li>
+      <li>Aller sur la page d'édition d'un billet sous la boîte du contenu.</li>
+      <li>Cliquer sur "Ajouter un billet à cette liste". Une nouvelle fenêtre s'ouvre (similaire à la fenêtre permettant de faire un lien vers un billet depuis la barre d'outils d'édition). Cliquez sur le lien choisi. Il s'ajoute dans la liste des liens.</li>
+      <li>Vous pouvez ajouter autant de liens que vous voulez. Vous pouvez les ordonner par glisser/déposer. Il faut ensuite enregistrer.</li>
+      <li>Vous pouvez supprimer tous les liens liés à un billet.</li>
+   </ol>
+
+    <h3>Template</h3>
+    <p>Ce plugin définit un template <em>inc_related_links.html</em>, que vous pouvez trouver 
+      dans le répertoire <strong>default-templates</strong> du plugin.</p>
+    <p>Vous pouvez modifier ce template. Pour cela copiez-le dans le répertoire <strong>tpl</strong> de votre thème.</p>
+    <p>Si vous utilisez le plugin <em>themeEditor</em> pour configurer votre thème, vous devriez le voir apparaître dans la liste des templates disponibles et modifiables.</p>
+    
+    <h3>Mise en place</h3>
+    <p>Vous avez plusieurs possibilités pour mettre en place le contenu généré par le plugin.</p>
+
+    <h4>Automatiquement</h4>
+    <p>Le contenu est mis en place automatiquement en utilisant le comportement publicEntryAfterContent. Vous pouvez modifier le contenu généré automatiquement en modifiant le template <em>inc_related_links.html</em> dans votre thème.</p>
+
+    <h4>En modifiant le template "post.html" de votre thème</h4>
+    <p>Pour vous aider le plugin définit des nouveaux tags :</p>
+    <ul>
+      <li><strong>RelatedLinksIf</strong> (bloc) : pour n'afficher le code que si vous avez défini des liens relatifs</li>
+      <li><strong>RelatedLinks</strong> (bloc) : boucle sur la liste des liens relatifs.</li>
+      <li><strong>RelatedLinkTitle</strong> (valeur) : libéllé du lien</li>
+      <li><strong>RelatedLinkURL</strong> (valeur) : URL du lien</li>
+    </ul>
+    <p>Vous trouverez un exemple de code dans l'onglet "Installation" de la page du plugin.</p>
+
+    <h4>En incluant le template <em>inc_related_links.html</em></h4>
+    <p>Vous pouvez l'inclure à l'endroit souhaité dans le template "post.html" de votre thème avec le code suivant : </p>
+    <pre>
+      {{tpl:include src="inc_related_links.html"}}
+    </pre>
+    <p>Vous pouvez alors soit garder le template inclus tel qu'il est ou alors le modifier dans votre thème.</p>
+
+    <h4>Avec un widget</h4>
+    <p>Allez sur la page <a href="./plugin.php?p=widgets">Widgets de présentation</a> et mettez en place le widget "Related Links". Vous pouvez changer le titre du widget.</p>
+
+    <h3>A propos</h3>
+    <p>Auteur : <a href="http://www.nikrou.net/contact">Nicolas Roudaire</a></p>
+    <p>Vous pouvez obtenir de l'aide sur <a href="http://www.nikrou.net/pages/relatedLinks">la page dédiée au plugin</a> sur mon blog.</p>
+    <p>Licence : GPL version 2</p>
+  </body>
+</html>

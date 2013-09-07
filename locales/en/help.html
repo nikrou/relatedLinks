@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html>
+  <head>
+    <title>Related Links</title>
+  </head>
+  <body>
+    <p>That plugin allows you to add related links to a post. The idea is to guide visitors by giving them related articles that can interest them.</p>
+
+    <h3>Usage</h3>
+    <ol>
+      <li>Enable the plugin (tab Settings)</li>
+      <li>Go to the post edit page above content box.</li>
+      <li>Click "Add new post to list". A new window opens. The content is like the ones opened in toolbar when adding a link to a post. Choose a link by clicking it. It will be added to list.</li>
+      <li>You can change order in list with drap and drop. Don't forget to save.</li>
+      <li>You can remove all links related to a post.</li>
+   </ol>
+
+    <h3>Template</h3>
+    <p>That plugin use one template <em>inc_related_links.html</em>. You can find it in the <strong>default-templates</strong> directory of the plugin.</p>
+    <p>You can change that template. In order to change it, copy it to the <strong>tpl</strong> directory of your theme.</p>
+    <p>If you manage your theme with the plugin <em>themeEditor</em>, you can see that template in the availables ones.</p>
+
+    <h3>Installation</h3>
+    <p>You can install it in many ways.</p>
+
+    <h4>Automatically</h4>
+    <p>The content can be automatically added by using the behavior publicEntryAfterContent. You can modify generated content by modify the template <em>inc_related_links.html</em> in your theme.</p>
+
+    <h4>By modifying the template "post.html" in your theme</h4>
+    <p>That plugin define new template tags:</p>
+    <ul>
+      <li><strong>RelatedLinksIf</strong> (block) : to only display related links if there are somes.</li>
+      <li><strong>RelatedLinks</strong> (block) : loop to display related links.</li>
+      <li><strong>RelatedLinkTitle</strong> (value) : link label</li>
+      <li><strong>RelatedLinkURL</strong> (value) : link URL</li>
+    </ul>
+    <p>You can find a code example in the "Installation" tab of the plugin page.</p>
+
+    <h4>By including the template <em>inc_related_links.html</em></h4>
+    <p>You can include it where you want in the template "post.html" in your theme by adding the following code:</p>
+    <pre>
+      {{tpl:include src="inc_related_links.html"}}
+    </pre>
+    <p>You can keep template provided by the plugin or modify the original one in your theme.</p>
+
+    <h4>With a widget</h4>
+    <p>Go to the <a href="./plugin.php?p=widgets">Presentation widgets page</a> and install the widget "Related Links". You can finally change widget's title.</p>
+
+    <h3>About</h3>
+    <p>Author : Nicolas Roudaire</p>
+    <p>You can find helpfull information (in french) on <a href="http://www.nikrou.net/pages/relatedLinks">the dedicated page</a> on my personal blog.</p>
+    <p>License : GPL version 2</p>
+  </body>
+</html>

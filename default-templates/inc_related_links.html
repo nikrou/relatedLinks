@@ -1,0 +1,11 @@
+<tpl:RelatedLinksIf>
+  <div id="related-links">
+    <h3>{{tpl:lang You liked that article...}}</h3>
+    <p>{{tpl:lang you should like the following articles:}}</p>
+    <ul class="related-links-posts">
+      <tpl:RelatedLinks>
+	<li><a href="{{tpl:RelatedLinkURL}}">{{tpl:RelatedLinkTitle}}</a></li>
+      </tpl:RelatedLinks>
+    </ul>
+  </div>
+</tpl:RelatedLinksIf>

@@ -1,0 +1,43 @@
+#related-links-list {
+  margin:0;
+  padding:0 0 0 1em;
+  width: 40%;
+}
+
+#related-links-list li.link {
+  list-style: none;
+  list-style-type: none;
+  padding: 5px 0 5px 30px;
+  margin: 2px 0;
+  float: left;
+  cursor: move;
+  width: 100%;
+  background: transparent url(admin/style/drag.png) no-repeat 0 0;
+}
+
+#content pre {
+  border: 1px solid #888;
+  padding: 5px;
+  background-color: #ccc;
+  width: 800px;
+  overflow: auto;
+}
+
+#related-links-expandable { 
+  list-style: none;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#related-links-expandable li { 
+  margin: 5px 0;
+}
+
+#related-links-expandable .related-link-expand { 
+  cursor: pointer;
+}
+
+.two-cols {  
+  margin-top: 20px;
+}
