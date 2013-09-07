@@ -67,13 +67,15 @@ class relatedLinksRestMethods
             throw new Exception('No post ID');
         }
 
+        $response = array();
+
         $manager = new relatedLinks($core,(int)$get['postId']);
         $rs = $manager->getList();
 
-        if ($rs->isEmpty()) {
+        if (!$rs->isEmpty()) {
             $rsp = new xmlTag();
             while ($rs->fetch()) {
-                $rsp->related_link($rs->post_title);
+                $rsp->related_link($rs->title);
             }
 
             return $rsp;

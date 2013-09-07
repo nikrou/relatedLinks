@@ -43,8 +43,8 @@
       <form action="<?php echo $p_url;?>" method="post">
 	<ul id="related-links-expandable">
 	  <?php while ($related_links->fetch()):?>
-	  <li>
-	    <img src="images/plus.png" class="related-link-expand" alt=""/>
+	  <li id="<?php echo $related_links->post_id;?>">
+	    <img src="images/expand.png" class="related-link-expand" alt=""/>
 	    <?php echo form::checkbox('related_links_list[]', $related_links->post_id);?>
 	    <a class="my_class" href="<?php echo $core->getPostAdminURL('post', $related_links->post_id);?>">
 	      <?php echo $related_links->post_title;?>

@@ -10,7 +10,7 @@ Installation
 
 You can install that plugin from your dotclear administration area.
 
-Contrubuting
+Contributing
 ============
 
 If you have ideas to improve that plugin, feel free to add an issue or even better send me a pull request.
