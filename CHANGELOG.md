@@ -1,3 +1,7 @@
+relatedLinks 0.8.0 - 2013-09-18
+================================
+* Fix issue in building plugin archive.
+
 relatedLinks 0.8.0 - 2013-09-07
 ================================
 * Titles of related links to a post can be shown from posts with related links tab.
