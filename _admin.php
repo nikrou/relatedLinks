@@ -2,7 +2,7 @@
 // +-----------------------------------------------------------------------+
 // | related Links  - a plugin for Dotclear                                |
 // +-----------------------------------------------------------------------+
-// | Copyright(C) 2010-2013 Nicolas Roudaire        http://www.nikrou.net  |
+// | Copyright(C) 2010-2014 Nicolas Roudaire        http://www.nikrou.net  |
 // +-----------------------------------------------------------------------+
 // | This program is free software; you can redistribute it and/or modify  |
 // | it under the terms of the GNU General Public License version 2 as     |
@@ -22,7 +22,7 @@
 if (!defined('DC_CONTEXT_ADMIN')) { return; }
 
 $_menu['Plugins']->addItem(
-    'Related Links', 
+    'Related Links',
     'plugin.php?p=relatedLinks',
     'index.php?pf=relatedLinks/img/icon.png',
     preg_match('/plugin.php\?p=relatedLinks/',$_SERVER['REQUEST_URI']),

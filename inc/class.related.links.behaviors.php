@@ -2,7 +2,7 @@
 // +-----------------------------------------------------------------------+
 // | related Links  - a plugin for Dotclear                                |
 // +-----------------------------------------------------------------------+
-// | Copyright(C) 2010-2013 Nicolas Roudaire        http://www.nikrou.net  |
+// | Copyright(C) 2010-2014 Nicolas Roudaire        http://www.nikrou.net  |
 // +-----------------------------------------------------------------------+
 // | This program is free software; you can redistribute it and/or modify  |
 // | it under the terms of the GNU General Public License version 2 as     |
@@ -20,10 +20,10 @@
 // +-----------------------------------------------------------------------+
 
 class relatedLinksBehaviors
-{  
-	public static function adminPostHeaders() {  
+{
+	public static function adminPostHeaders() {
 		global $core;
-  
+
 		$plugin_root = html::stripHostURL($core->blog->getQmarkURL().'pf=relatedLinks');
 		$res = '<script type="text/javascript">';
 		$res .= 'var rl_text_confirm_remove = \''.__('Are you sure you want to remove this post?').'\';';
@@ -36,7 +36,7 @@ class relatedLinksBehaviors
 		$res .= sprintf('<script type="text/javascript" src="%s"></script>',
 		$plugin_root.'/js/ui.sortable.js'
 		);
-    
+
 		$res .= sprintf('<script type="text/javascript" src="%s"></script>',
 		$plugin_root.'/js/admin_post_form.js'
 		);
@@ -53,7 +53,7 @@ class relatedLinksBehaviors
 		$related_links = null;
 		$related_links_ids = '';
 		$add_post = '';
-    
+
 		if ($post!=null) {
 			$manager = new relatedLinks($core, $post->post_id);
 			$related_links = $manager->getList();
@@ -79,7 +79,7 @@ class relatedLinksBehaviors
 		global $core;
 
 		$post_id = (integer) $post_id;
-    
+
 		if (!empty($_POST['related_links_ids'])) {
 			$links = explode('|', $_POST['related_links_ids']);
 			$related_links = new relatedLinks($core, $post_id);
@@ -95,7 +95,7 @@ class relatedLinksBehaviors
 		$tpl = 'inc_related_links.html';
 		$core->tpl->setPath($core->tpl->getPath(), dirname(__FILE__).'/../default-templates');
 		$tpl_file = $core->tpl->getFilePath($tpl);
-		
+
 		if (!$tpl_file) {
 			throw new Exception('Unable to find template ');
 		}

@@ -2,7 +2,7 @@
 // +-----------------------------------------------------------------------+
 // | related Links  - a plugin for Dotclear                                |
 // +-----------------------------------------------------------------------+
-// | Copyright(C) 2010-2013 Nicolas Roudaire        http://www.nikrou.net  |
+// | Copyright(C) 2010-2014 Nicolas Roudaire        http://www.nikrou.net  |
 // +-----------------------------------------------------------------------+
 // | This program is free software; you can redistribute it and/or modify  |
 // | it under the terms of the GNU General Public License version 2 as     |
@@ -50,7 +50,7 @@ class tplRelatedLinks
 
         return $res;
     }
-  
+
     public static function relatedLinksIf($attr,$content) {
         $res = "<?php\n";
         $res .= 'if ($core->blog->settings->relatedlinks->active && $core->url->type==\'post\'):';
@@ -58,13 +58,13 @@ class tplRelatedLinks
         $res .= '$_ctx->related_links = $_ctx->related_links->getList();';
         $res .= 'if (!$_ctx->related_links->isEmpty()):?>'.$content.'<?php endif;?>';
         $res .= '<?php endif;?>';
-    
+
         return $res;
     }
 
     public static function relatedLinks($attr, $content) {
         $res = '<?php while ($_ctx->related_links->fetch()) : ?>'.$content.'<?php endwhile;?>';
-    
+
         return $res;
     }
 

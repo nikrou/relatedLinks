@@ -2,7 +2,7 @@
 // +-----------------------------------------------------------------------+
 // | related Links  - a plugin for Dotclear                                |
 // +-----------------------------------------------------------------------+
-// | Copyright(C) 2010-2013 Nicolas Roudaire        http://www.nikrou.net  |
+// | Copyright(C) 2010-2014 Nicolas Roudaire        http://www.nikrou.net  |
 // +-----------------------------------------------------------------------+
 // | This program is free software; you can redistribute it and/or modify  |
 // | it under the terms of the GNU General Public License version 2 as     |
@@ -23,14 +23,14 @@ if (!defined('DC_RC_PATH')) { return; }
 
 $core->blog->settings->addNameSpace('relatedlinks');
 if ($core->blog->settings->relatedlinks->active) {
-  $core->tpl->addBlock('RelatedLinks', array('tplRelatedLinks','relatedLinks'));
-  $core->tpl->addBlock('RelatedLinksIf', array('tplRelatedLinks','relatedLinksIf'));
-  $core->tpl->addValue('RelatedLinkTitle', array('tplRelatedLinks','relatedLinkTitle'));
-  $core->tpl->addValue('RelatedLinkURL', array('tplRelatedLinks','relatedLinkURL'));
+    $core->tpl->addBlock('RelatedLinks', array('tplRelatedLinks','relatedLinks'));
+    $core->tpl->addBlock('RelatedLinksIf', array('tplRelatedLinks','relatedLinksIf'));
+    $core->tpl->addValue('RelatedLinkTitle', array('tplRelatedLinks','relatedLinkTitle'));
+    $core->tpl->addValue('RelatedLinkURL', array('tplRelatedLinks','relatedLinkURL'));
 
-  if ($core->blog->settings->relatedlinks->automatic_content) {
-    $core->addBehavior('publicEntryAfterContent',array('relatedLinksBehaviors','publicEntryAfterContent'));
-  }
+    if ($core->blog->settings->relatedlinks->automatic_content) {
+        $core->addBehavior('publicEntryAfterContent',array('relatedLinksBehaviors','publicEntryAfterContent'));
+    }
 }
 
 require dirname(__FILE__).'/_widgets.php';

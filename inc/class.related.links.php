@@ -2,7 +2,7 @@
 // +-----------------------------------------------------------------------+
 // | related Links  - a plugin for Dotclear                                |
 // +-----------------------------------------------------------------------+
-// | Copyright(C) 2010-2013 Nicolas Roudaire        http://www.nikrou.net  |
+// | Copyright(C) 2010-2014 Nicolas Roudaire        http://www.nikrou.net  |
 // +-----------------------------------------------------------------------+
 // | This program is free software; you can redistribute it and/or modify  |
 // | it under the terms of the GNU General Public License version 2 as     |
@@ -33,7 +33,7 @@ class relatedLinks
 
     public function add($links, $positions) {
         $cur = $this->con->openCursor($this->table);
-    
+
         $strReq = 'DELETE FROM '.$this->table;
         $strReq .= ' WHERE post_id='.$this->post_id;
         $rs = $this->con->execute($strReq);
@@ -48,7 +48,7 @@ class relatedLinks
 
             $cur->position = $positions[$link];
 
-            $cur->link = $link;    		
+            $cur->link = $link;
             $cur->insert();
         }
         $this->blog->triggerBlog();
@@ -56,23 +56,23 @@ class relatedLinks
 
     public function removeLink($link_id) {
         $cur = $this->con->openCursor($this->table);
-    
+
         $strReq = 'DELETE FROM '.$this->table;
         $strReq .= ' WHERE post_id='.$this->post_id;
         $strReq .= ' AND link='.$link_id;
 
         $rs = $this->con->execute($strReq);
-        $this->blog->triggerBlog();    
+        $this->blog->triggerBlog();
     }
 
     public function removeLinks() {
         $cur = $this->con->openCursor($this->table);
-    
+
         $strReq = 'DELETE FROM '.$this->table;
         $strReq .= ' WHERE post_id='.$this->post_id;
 
         $rs = $this->con->execute($strReq);
-        $this->blog->triggerBlog();    
+        $this->blog->triggerBlog();
     }
 
     public function addLink($link_id) {
@@ -88,7 +88,7 @@ class relatedLinks
         $rs = $this->con->select($strReq);
         $cur->position = (integer) $rs->f(0) + 1;
 
-        $cur->link = $link_id;    		
+        $cur->link = $link_id;
         $cur->insert();
 
         $this->blog->triggerBlog();
@@ -106,10 +106,10 @@ class relatedLinks
             $strReq .= ' AND R.post_id='.$this->post_id;
         }
         $strReq .= ' ORDER BY position asc';
-    
+
         $rs = $this->con->select($strReq);
         $rs = $rs->toStatic();
-		
+
         return $rs;
     }
 
@@ -120,10 +120,10 @@ class relatedLinks
         $strReq .= ' ON Q.post_id=R.post_id';
         $strReq .= ' WHERE R.blog_id = \''.$this->con->escape($this->blog->id).'\'';
         $strReq .= ' GROUP BY R.post_id, post_title, Q.post_id';
-    
+
         $rs = $this->con->select($strReq);
         $rs = $rs->toStatic();
-		
+
         return $rs;
     }
 }
