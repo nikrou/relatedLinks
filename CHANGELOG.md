@@ -1,3 +1,7 @@
+relatedLinks 0.8.3 - 2014-08-22
+================================
+* Fix issue in building plugin archive. Missing locales directory, thanks to Mozinet
+
 relatedLinks 0.8.2 - 2014-08-20
 ================================
 * Fix issue in building plugin archive. File missing.
