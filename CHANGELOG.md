@@ -1,3 +1,8 @@
+relatedLinks 0.9.0 - 2014-08-24
+================================
+* Fix issue in sortable with firefox. Thanks to Mozinet to report it. Use now jquery.ui.core from core.
+* Related link area can be hidden/extendable like other areas in post page.
+
 relatedLinks 0.8.3 - 2014-08-22
 ================================
 * Fix issue in building plugin archive. Missing locales directory, thanks to Mozinet

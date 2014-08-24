@@ -20,10 +20,8 @@ relatedLinks/index.php
 relatedLinks/css/related_link.css
 relatedLinks/img/icon.png
 relatedLinks/_define.php
-relatedLinks/js/ui.sortable.js
 relatedLinks/js/popup.js
 relatedLinks/js/related_links_list.js
-relatedLinks/js/ui.core.js
 relatedLinks/js/admin_post_form.js
 relatedLinks/default-templates/inc_related_links.html
 relatedLinks/MANIFEST

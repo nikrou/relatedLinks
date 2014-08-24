@@ -9,19 +9,19 @@ $(function() {
 
 	$('#add-post').click(function() {
 		var open_url = 'plugin.php?p=relatedLinks&popup=1';
-		
+
 		window.related_links = $.related_links;
 
 		var p_win = window.open(open_url,'dc_popup',
 					'alwaysRaised=yes,dependent=yes,toolbar=yes,height=500,width=760,'+
-					'menubar=no,resizable=yes,scrollbars=yes,status=no');	
+					'menubar=no,resizable=yes,scrollbars=yes,status=no');
 		return false;
 	});
 
 	var function_remove = function() {
 		if (window.confirm(rl_text_confirm_remove)) {
 			var id = $(this).prev().attr('class').replace('post-','');
-			
+
 			var links = [];
 			var related_links = $('#related_links_ids').val();
 			if (related_links!='') {
@@ -34,7 +34,7 @@ $(function() {
 			}
 			$('#related_links_ids').val(links.join('|'));
 			$(this).parent().remove();
-			
+
 			if ($('#id').length>0) {
 				$.get('services.php',
 				      {f:'removeRelatedLink',postId:$('#id').val(),linkId:id},
@@ -48,11 +48,11 @@ $(function() {
 		}
 		return false;
 	};
-	
+
 	$.related_links.fncall.add_link = function() {
 		var data = $.related_links.data;
 		var position = 1;
-		
+
 		var links = [];
 		var related_links = $('#related_links_ids').val();
 		if (related_links!='') {
@@ -113,7 +113,7 @@ $(function() {
 			$('#related_links_ids').val('');
 			$('#related-links-list li').remove();
 			$(this).parent().hide();
-		}	
+		}
 		return false;
 	});
 
@@ -128,4 +128,9 @@ $(function() {
 				});
 			}
 		});
+
+	$('.related-links-area label').toggleWithLegend($('.related-links-area').children().not('label'),{
+		user_pref: 'dcx_related_links',
+		legend_click:true
+	});
 });

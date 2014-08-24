@@ -1,5 +1,5 @@
-<fieldset>
-  <legend><?php echo __('Related Links');?></legend>  
+<div class="area related-links-area clearfix">
+  <label class="bold"><?php echo __('Related Links');?></label>
 
   <p>
     <a id="add-post" href="#"><?php echo __('Add new post to list');?></a>
@@ -18,4 +18,4 @@
     </li>
     <?php endif;?>
   </ul>
-</fieldset>
+</div>

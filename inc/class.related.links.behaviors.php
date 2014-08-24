@@ -30,18 +30,15 @@ class relatedLinksBehaviors
 		$res .= 'var rl_text_confirm_remove_all = \''.__('Are you sure you want to remove all posts?').'\';';
 		$res .= '</script>';
 
-		$res .= sprintf('<script type="text/javascript" src="%s"></script>',
-		$plugin_root.'/js/ui.core.js'
-		);
-		$res .= sprintf('<script type="text/javascript" src="%s"></script>',
-		$plugin_root.'/js/ui.sortable.js'
-		);
+		$res .= '<script type="text/javascript" src="js/jquery/jquery-ui.custom.js"></script>';
 
-		$res .= sprintf('<script type="text/javascript" src="%s"></script>',
-		$plugin_root.'/js/admin_post_form.js'
+		$res .= sprintf(
+            '<script type="text/javascript" src="%s"></script>',
+            $plugin_root.'/js/admin_post_form.js'
 		);
-		$res .= sprintf('<link rel="stylesheet" media="screen" type="text/css" href="%s"/>',
-		$plugin_root.'/css/related_link.css'
+		$res .= sprintf(
+            '<link rel="stylesheet" media="screen" type="text/css" href="%s"/>',
+            $plugin_root.'/css/related_link.css'
 		);
 
 		return $res;
