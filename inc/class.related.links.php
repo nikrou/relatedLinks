@@ -96,6 +96,7 @@ class relatedLinks
 
     public function getList($ids=array()) {
         $strReq =  'SELECT link, position, post_title AS title, post_url as url';
+        $strReq .= ',post_excerpt_xhtml, post_content_xhtml';
         $strReq .= ' FROM '.$this->table.' AS R';
         $strReq .= ' LEFT JOIN '.$this->table_post.' AS P';
         $strReq .= ' ON P.post_id=R.link';

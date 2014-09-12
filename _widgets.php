@@ -29,6 +29,8 @@ class relatedLinksWidgets
     public static function initWidgets($w) {
         $w->create('related_links', 'Related Links', array('tplRelatedLinks', 'widget'));
         $w->related_links->setting('title', __('Title:'), __('Related Links'));
+        $w->related_links->setting('content_only', __('Content only'), 0, 'check');
+        $w->related_links->setting('class', __('CSS class:'), '');
     }
 
     public static function initDefaultWidgets($w, $d) {

@@ -28,7 +28,8 @@ $settings = $core->blog->settings;
 $settings->addNamespace('relatedlinks');
 
 $settings->relatedlinks->put('active', false, 'boolean', 'Related Links plugin activated?', false);
-$settings->relatedlinks->put('automatic_content', true, 'boolean', 'Add related Links content automatically?', false);
+$settings->relatedlinks->put('automatic_content', true, 'boolean', 'Add related links content automatically?', false);
+$settings->relatedlinks->put('content_with_image', false, 'boolean', 'Add images to related links automatically?', false);
 
 $s = new dbStruct($core->con, $core->prefix);
 $s->related_link

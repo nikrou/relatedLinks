@@ -1,3 +1,7 @@
+relatedLinks 1.0.0 - 2014-08-26
+================================
+* Allow to add an image to related links. Thanks for i_love_dc for the idea.
+
 relatedLinks 0.9.0 - 2014-08-24
 ================================
 * Fix issue in sortable with firefox. Thanks to Mozinet to report it. Use now jquery.ui.core from core.

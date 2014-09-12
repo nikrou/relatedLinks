@@ -19,4 +19,4 @@
 // | MA 02110-1301 USA.                                                    |
 // +-----------------------------------------------------------------------+
 
-$__resources['help']['relatedLinks'] = dirname(__FILE__).'/help.html';
+$__resources['help']['relatedLinks'] = dirname(__FILE__).'/related_links.html';

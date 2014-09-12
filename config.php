@@ -25,19 +25,25 @@ $default_tab = 'relatedlinks_settings';
 
 $core->blog->settings->addNameSpace('relatedlinks');
 $relatedlinks_active = $core->blog->settings->relatedlinks->active;
+$relatedlinks_was_actived = $relatedlinks_active;
 $relatedlinks_automatic_content = $core->blog->settings->relatedlinks->automatic_content;
+$relatedlinks_content_with_image = $core->blog->settings->relatedlinks->content_with_image;
 
 if (!empty($_POST['saveconfig'])) {
     try {
-        if ($relatedlinks_active) {
-            $relatedlinks_automatic_content = (empty($_POST['relatedlinks_automatic_content']))?false:true;
-            $core->blog->settings->relatedlinks->put('automatic_content', $relatedlinks_automatic_content, 'boolean');
-        }
-
         $relatedlinks_active = (empty($_POST['relatedlinks_active']))?false:true;
         $core->blog->settings->relatedlinks->put('active', $relatedlinks_active, 'boolean');
 
-        $message = __('Configuration successfully updated.');
+        // change other settings only if they were in html page
+        if ($relatedlinks_was_actived) {
+            $relatedlinks_automatic_content = (empty($_POST['relatedlinks_automatic_content']))?false:true;
+            $core->blog->settings->relatedlinks->put('automatic_content', $relatedlinks_automatic_content, 'boolean');
+
+            $relatedlinks_content_with_image = (empty($_POST['relatedlinks_automatic_content']))?false:true;
+            $core->blog->settings->relatedlinks->put('content_with_image', $relatedlinks_content_with_image, 'boolean');
+        }
+
+        $message = __('The configuration has been updated.');
     } catch(Exception $e) {
         $core->error->add($e->getMessage());
     }
@@ -49,7 +55,7 @@ if (!empty($_POST['saveconfig'])) {
     unset($manager);
     $default_tab = 'relatedlinks_links';
 
-    $message = __('Related links successfully deleted');
+    $message = __('Related links deleted');
 }
 
 $manager = new relatedLinks($core, null);

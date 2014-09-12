@@ -27,6 +27,7 @@ if ($core->blog->settings->relatedlinks->active) {
     $core->tpl->addBlock('RelatedLinksIf', array('tplRelatedLinks','relatedLinksIf'));
     $core->tpl->addValue('RelatedLinkTitle', array('tplRelatedLinks','relatedLinkTitle'));
     $core->tpl->addValue('RelatedLinkURL', array('tplRelatedLinks','relatedLinkURL'));
+    $core->tpl->addValue('RelatedLinkImage', array('tplRelatedLinks','relatedLinkImage'));
 
     if ($core->blog->settings->relatedlinks->automatic_content) {
         $core->addBehavior('publicEntryAfterContent',array('relatedLinksBehaviors','publicEntryAfterContent'));
