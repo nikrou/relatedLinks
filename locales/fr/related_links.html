@@ -16,16 +16,16 @@
    </ol>
 
     <h3>Template</h3>
-    <p>Ce plugin définit un template <em>inc_related_links.html</em>, que vous pouvez trouver
+    <p>Ce plugin définit deux templates <em>inc_related_links.html</em> et <em>inc_related_links_with_images.html</em>, que vous pouvez trouver
       dans le répertoire <strong>default-templates</strong> du plugin.</p>
-    <p>Vous pouvez modifier ce template. Pour cela copiez-le dans le répertoire <strong>tpl</strong> de votre thème.</p>
-    <p>Si vous utilisez le plugin <em>themeEditor</em> pour configurer votre thème, vous devriez le voir apparaître dans la liste des templates disponibles et modifiables.</p>
+    <p>Vous pouvez modifier ces templates. Pour cela copiez-les dans le répertoire <strong>tpl</strong> de votre thème.</p>
+    <p>Si vous utilisez le plugin <em>themeEditor</em> pour configurer votre thème, vous devriez les voir apparaître dans la liste des templates disponibles et modifiables.</p>
 
     <h3>Mise en place</h3>
     <p>Vous avez plusieurs possibilités pour mettre en place le contenu généré par le plugin.</p>
 
     <h4>Automatiquement</h4>
-    <p>Le contenu est mis en place automatiquement en utilisant le comportement publicEntryAfterContent. Vous pouvez modifier le contenu généré automatiquement en modifiant le template <em>inc_related_links.html</em> dans votre thème.</p>
+    <p>Le contenu est mis en place automatiquement en utilisant le comportement publicEntryAfterContent. Vous pouvez modifier le contenu généré automatiquement en modifiant le template <em>inc_related_links.html</em> (ou le template <em>inc_related_links_with_images.html</em>) dans votre thème.</p>
 
     <h4>En modifiant le template "post.html" de votre thème</h4>
     <p>Pour vous aider le plugin définit des nouveaux tags :</p>
@@ -34,10 +34,11 @@
       <li><strong>RelatedLinks</strong> (bloc) : boucle sur la liste des liens relatifs.</li>
       <li><strong>RelatedLinkTitle</strong> (valeur) : libéllé du lien</li>
       <li><strong>RelatedLinkURL</strong> (valeur) : URL du lien</li>
+      <li><strong>RelatedLinkImage</strong> (valeur) : Image à ajouter au lien</li>
     </ul>
     <p>Vous trouverez un exemple de code dans l'onglet "Installation" de la page du plugin.</p>
 
-    <h4>En incluant le template <em>inc_related_links.html</em></h4>
+    <h4>En incluant le template <em>inc_related_links.html</em> (ou ou le template <em>inc_related_links_with_images.html</em>)</h4>
     <p>Vous pouvez l'inclure à l'endroit souhaité dans le template "post.html" de votre thème avec le code suivant : </p>
     <pre>
       {{tpl:include src="inc_related_links.html"}}

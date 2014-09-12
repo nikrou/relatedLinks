@@ -48,7 +48,11 @@ class tplRelatedLinks
         }
         $res .= '</ul>';
 
-		return $w->renderDiv($w->content_only, 'related-links-widget '.$w->class, '', $res);
+        if (version_compare($core->getVersion(), '2.6', '>=')) {
+            return '<div class="related_links">'.$res.'</div>';
+        } else {
+            return $w->renderDiv($w->content_only, 'related-links-widget '.$w->class, '', $res);
+        }
     }
 
     public static function relatedLinksIf($attr, $content) {
@@ -86,7 +90,13 @@ class tplRelatedLinks
       >
 	*/
     public static function relatedLinkImage($attr) {
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
+        global $core;
+
+        if (!$core->blog->settings->relatedlinks->content_with_image) {
+            return;
+        }
+
+        $f = $core->tpl->getFilters($attr);
 
         $res = "<?php\n";
         $res .= '$params = array();';

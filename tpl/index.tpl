@@ -31,12 +31,16 @@
 	  </p>
 
 	  <p>
-
-	    <?php echo __('Use image for related links?');?>
-	    <?php echo form::radio('relatedlinks_content_with_image', 1, $relatedlinks_content_with_image==1);?>
-	    <label for="relatedlinks_content_with_image_1"><?php echo __('Yes');?></label>
-	    <?php echo form::radio('relatedlinks_content_with_image', 0, $relatedlinks_content_with_image==0);?>
-	    <label for="relatedlinks_content_with_image_0"><?php echo __('No');?></label>
+	    <label class="classic">
+	      <?php echo form::radio('relatedlinks_content_with_image', 1, $relatedlinks_content_with_image==1);?>
+	      <?php echo __('Use image for related links?');?>
+	    </label>
+	  </p>
+	  <p>
+	    <label class="classic">
+	      <?php echo form::radio('relatedlinks_content_with_image', 0, $relatedlinks_content_with_image==0);?>
+	      <?php echo __('Do not use image for related links?');?>
+	    </label>
 	  </p>
 	</div>
 	<?php endif;?>

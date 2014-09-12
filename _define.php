@@ -25,6 +25,6 @@ $this->registerModule(
 	/* Name */		    "related Links",
 	/* Description*/	"Add related links from a post",
 	/* Author */		"Nicolas Roudaire",
-	/* Version */		'1.0.0',
+	/* Version */		'1.0.1',
 	/* Permissions */	'contentadmin,pages'
 );

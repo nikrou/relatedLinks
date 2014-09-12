@@ -92,3 +92,9 @@ msgstr "Créé par : "
 
 msgid "Posts with related links"
 msgstr "Billets avec des liens relatifs"
+
+msgid "Use image for related links?"
+msgstr "Ajouter des images aux liens relatifs"
+
+msgid "Do not use image for related links?"
+msgstr "Ne pas ajouter d'images aux liens relatifs"

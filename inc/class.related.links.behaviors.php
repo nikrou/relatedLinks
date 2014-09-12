@@ -30,16 +30,15 @@ class relatedLinksBehaviors
 		$res .= 'var rl_text_confirm_remove_all = \''.__('Are you sure you want to remove all posts?').'\';';
 		$res .= '</script>';
 
-		$res .= '<script type="text/javascript" src="js/jquery/jquery-ui.custom.js"></script>';
+        if (version_compare($core->getVersion(), '2.6', '>=')) {
+            $res .= sprintf('<script type="text/javascript" src="%s"></script>', $plugin_root.'/js/ui.core.js');
+            $res .= sprintf('<script type="text/javascript" src="%s"></script>', $plugin_root.'/js/ui.sortable.js');
+        } else {
+            $res .= '<script type="text/javascript" src="js/jquery/jquery-ui.custom.js"></script>';
+        }
 
-		$res .= sprintf(
-            '<script type="text/javascript" src="%s"></script>',
-            $plugin_root.'/js/admin_post_form.js'
-		);
-		$res .= sprintf(
-            '<link rel="stylesheet" media="screen" type="text/css" href="%s"/>',
-            $plugin_root.'/css/related_link.css'
-		);
+		$res .= sprintf('<script type="text/javascript" src="%s"></script>', $plugin_root.'/js/admin_post_form.js');
+		$res .= sprintf('<link rel="stylesheet" media="screen" type="text/css" href="%s"/>', $plugin_root.'/css/related_link.css');
 
 		return $res;
 	}
@@ -89,7 +88,11 @@ class relatedLinksBehaviors
 			return;
 		}
 
-		$tpl = 'inc_related_links.html';
+        if ($core->blog->settings->relatedlinks->content_with_image) {
+            $tpl = 'inc_related_links_with_images.html';
+        } else {
+            $tpl = 'inc_related_links.html';
+        }
 		$core->tpl->setPath($core->tpl->getPath(), dirname(__FILE__).'/../default-templates');
 		$tpl_file = $core->tpl->getFilePath($tpl);
 

@@ -39,7 +39,7 @@ if (!empty($_POST['saveconfig'])) {
             $relatedlinks_automatic_content = (empty($_POST['relatedlinks_automatic_content']))?false:true;
             $core->blog->settings->relatedlinks->put('automatic_content', $relatedlinks_automatic_content, 'boolean');
 
-            $relatedlinks_content_with_image = (empty($_POST['relatedlinks_automatic_content']))?false:true;
+            $relatedlinks_content_with_image = (empty($_POST['relatedlinks_content_with_image']))?false:true;
             $core->blog->settings->relatedlinks->put('content_with_image', $relatedlinks_content_with_image, 'boolean');
         }
 

@@ -1,3 +1,8 @@
+relatedLinks 1.0.1 - 2014-09-12
+================================
+* Fix issue with dotclear release before 2.6, thanks to Cécile.
+* Option to not add images to related links
+
 relatedLinks 1.0.0 - 2014-08-26
 ================================
 * Allow to add an image to related links. Thanks for i_love_dc for the idea.
