@@ -2,7 +2,7 @@
 // +-----------------------------------------------------------------------+
 // | related Links  - a plugin for Dotclear                                |
 // +-----------------------------------------------------------------------+
-// | Copyright(C) 2010-2014 Nicolas Roudaire        http://www.nikrou.net  |
+// | Copyright(C) 2010-2015 Nicolas Roudaire        http://www.nikrou.net  |
 // +-----------------------------------------------------------------------+
 // | This program is free software; you can redistribute it and/or modify  |
 // | it under the terms of the GNU General Public License version 2 as     |
@@ -25,6 +25,6 @@ $this->registerModule(
 	/* Name */		    "related Links",
 	/* Description*/	"Add related links from a post",
 	/* Author */		"Nicolas Roudaire",
-	/* Version */		'1.0.1',
+	/* Version */		'1.2.0',
 	/* Permissions */	'contentadmin,pages'
 );

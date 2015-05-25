@@ -23,21 +23,25 @@
   overflow: auto;
 }
 
-#related-links-expandable { 
+#related-links-expandable {
   list-style: none;
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
-#related-links-expandable li { 
+#related-links-expandable li {
   margin: 5px 0;
 }
 
-#related-links-expandable .related-link-expand { 
+#related-links-expandable .related-link-expand {
   cursor: pointer;
 }
 
-.two-cols {  
+.two-cols {
   margin-top: 20px;
+}
+
+pre.code {
+    white-space: pre;
 }

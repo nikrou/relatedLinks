@@ -2,7 +2,7 @@
 // +-----------------------------------------------------------------------+
 // | related Links  - a plugin for Dotclear                                |
 // +-----------------------------------------------------------------------+
-// | Copyright(C) 2010-2014 Nicolas Roudaire        http://www.nikrou.net  |
+// | Copyright(C) 2010-2015 Nicolas Roudaire        http://www.nikrou.net  |
 // +-----------------------------------------------------------------------+
 // | This program is free software; you can redistribute it and/or modify  |
 // | it under the terms of the GNU General Public License version 2 as     |
@@ -93,7 +93,13 @@ class relatedLinksBehaviors
         } else {
             $tpl = 'inc_related_links.html';
         }
-		$core->tpl->setPath($core->tpl->getPath(), dirname(__FILE__).'/../default-templates');
+
+        $tplset = $core->themes->moduleInfo($core->blog->settings->system->theme, 'tplset');
+        if (!empty($tplset) && is_dir(dirname(__FILE__).'/../default-templates/'.$tplset)) {
+            $core->tpl->setPath($core->tpl->getPath(), dirname(__FILE__).'/../default-templates/'.$tplset);
+        } else {
+            $core->tpl->setPath($core->tpl->getPath(), dirname(__FILE__).'/../default-templates/'.DC_DEFAULT_TPLSET);
+        }
 		$tpl_file = $core->tpl->getFilePath($tpl);
 
 		if (!$tpl_file) {

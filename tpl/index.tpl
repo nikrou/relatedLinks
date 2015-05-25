@@ -91,19 +91,15 @@
       </ul>
 
       <p><?php echo __('Code example to add to your "post.html" theme template:');?></p>
-      <pre>
-	&lt;tpl:RelatedLinksIf&gt;
-	&nbsp;&nbsp;&lt;div id="related-links"&gt;
-	&nbsp;&nbsp;&nbsp;&nbsp;&lt;h3&gt;{{tpl:lang You liked that article...}}&lt;/h3&gt;
-	&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;{{tpl:lang you should like the following articles:}}&lt;/p&gt;
-	&nbsp;&nbsp;&nbsp;&nbsp;&lt;ul class="posts"&gt;
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tpl:RelatedLinks&gt;
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;a href="{{tpl:RelatedLinkURL}}"&gt;{{tpl:RelatedLinkTitle}}&lt;/a&gt;&lt;/li&gt;
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tpl:RelatedLinks&gt;
-	&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ul&gt;
-	&nbsp;&nbsp;&lt;/div&gt;
-	&lt;/tpl:RelatedLinksIf&gt;
+      <pre class="code">
+	<?php echo html::escapeHTML(file_get_contents(__DIR__.'/../default-templates/currywurst/inc_related_links.html'));?>
       </pre>
+
+      <p><?php echo __('Code example (links with images) to add to your "post.html" theme template:');?></p>
+      <pre class="code">
+	<?php echo html::escapeHTML(file_get_contents(__DIR__.'/../default-templates/currywurst/inc_related_links_with_images.html'));?>
+      </pre>
+
     </div>
     <div class="multi-part" id="relatedlinks_about" title="<?php echo __('About'); ?>">
       <p>
