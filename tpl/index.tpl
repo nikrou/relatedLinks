@@ -7,9 +7,9 @@
     <?php echo dcPage::jsLoad('index.php?pf=relatedLinks/js/related_links_list.js');?>
   </head>
   <body>
-    <h2><?php echo html::escapeHTML($core->blog->name); ?> &gt; Related Links</h2>
+    <?php echo dcPage::breadcrumb(array(html::escapeHTML($core->blog->name) => '',__('relatedLinks') => '')).dcPage::notices();?>
     <?php if (!empty($message)):?>
-    <p class="message"><?php echo $message;?></p>
+    <?php echo $message;?>
     <?php endif;?>
 
     <div class="multi-part" id="relatedlinks_settings" title="<?php echo __('Settings');?>">
