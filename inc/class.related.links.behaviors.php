@@ -2,7 +2,7 @@
 // +-----------------------------------------------------------------------+
 // | related Links  - a plugin for Dotclear                                |
 // +-----------------------------------------------------------------------+
-// | Copyright(C) 2010-2015 Nicolas Roudaire        http://www.nikrou.net  |
+// | Copyright(C) 2010-2018 Nicolas Roudaire       https://www.nikrou.net  |
 // +-----------------------------------------------------------------------+
 // | This program is free software; you can redistribute it and/or modify  |
 // | it under the terms of the GNU General Public License version 2 as     |
@@ -25,19 +25,12 @@ class relatedLinksBehaviors
 		global $core;
 
 		$plugin_root = html::stripHostURL($core->blog->getQmarkURL().'pf=relatedLinks');
-		$res = '<script type="text/javascript">';
+		$res = '<script>';
 		$res .= 'var rl_text_confirm_remove = \''.__('Are you sure you want to remove this post?').'\';';
 		$res .= 'var rl_text_confirm_remove_all = \''.__('Are you sure you want to remove all posts?').'\';';
 		$res .= '</script>';
-
-        if (version_compare($core->getVersion(), '2.6', '>=')) {
-            $res .= sprintf('<script type="text/javascript" src="%s"></script>', $plugin_root.'/js/ui.core.js');
-            $res .= sprintf('<script type="text/javascript" src="%s"></script>', $plugin_root.'/js/ui.sortable.js');
-        } else {
-            $res .= '<script type="text/javascript" src="js/jquery/jquery-ui.custom.js"></script>';
-        }
-
-		$res .= sprintf('<script type="text/javascript" src="%s"></script>', $plugin_root.'/js/admin_post_form.js');
+        $res .= '<script src="js/jquery/jquery-ui.custom.js"></script>';
+		$res .= sprintf('<script src="%s"></script>', $plugin_root.'/js/admin_post_form.js');
 		$res .= sprintf('<link rel="stylesheet" media="screen" type="text/css" href="%s"/>', $plugin_root.'/css/related_link.css');
 
 		return $res;

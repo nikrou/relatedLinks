@@ -1,3 +1,8 @@
+relatedLinks 1.3.0 - 2018-08-29
+================================
+* Fix issue for breadcrumb. Thanks to Tomek
+* Fix issue preventing list of links to be sorted. Thanks to i_love_dc for reporting.
+
 relatedLinks 1.0.1 - 2014-09-12
 ================================
 * Fix issue with dotclear release before 2.6, thanks to Cécile.

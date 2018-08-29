@@ -12,7 +12,7 @@
   float: left;
   cursor: move;
   width: 100%;
-  background: transparent url(admin/style/drag.png) no-repeat 0 0;
+  background: transparent url('index.php?pf=relatedLinks/img/drag.png') no-repeat 0 0;
 }
 
 #content pre {
