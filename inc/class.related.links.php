@@ -1,29 +1,25 @@
 <?php
-// +-----------------------------------------------------------------------+
-// | related Links  - a plugin for Dotclear                                |
-// +-----------------------------------------------------------------------+
-// | Copyright(C) 2010-2014 Nicolas Roudaire        http://www.nikrou.net  |
-// +-----------------------------------------------------------------------+
-// | This program is free software; you can redistribute it and/or modify  |
-// | it under the terms of the GNU General Public License version 2 as     |
-// | published by the Free Software Foundation                             |
-// |                                                                       |
-// | This program is distributed in the hope that it will be useful, but   |
-// | WITHOUT ANY WARRANTY; without even the implied warranty of            |
-// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      |
-// | General Public License for more details.                              |
-// |                                                                       |
-// | You should have received a copy of the GNU General Public License     |
-// | along with this program; if not, write to the Free Software           |
-// | Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,            |
-// | MA 02110-1301 USA.                                                    |
-// +-----------------------------------------------------------------------+
+/*
+ * This file is part of relatedLinks plugin, for dotclear
+ *
+ * Copyright(c) Nicolas Roudaire  https://www.nikrou.net/
+ * Licensed under the GPL version 2.0 license.
+ *
+ * For the full copyright and license information, please view the COPYING
+ * file that was distributed with this source code.
+ */
 
 class relatedLinks
 {
-    public function __construct($core, $post_id) {
-        $this->core = $core;
-        $this->blog = $core->blog;
+    private dcBlog $blog;
+    private dbLayer $con;
+    private ?int $post_id;
+    private string $table;
+    private string $table_post;
+
+    public function __construct($post_id)
+    {
+        $this->blog = dcCore::app()->blog;
         $this->con = $this->blog->con;
         $this->post_id = $post_id;
 
@@ -31,18 +27,19 @@ class relatedLinks
         $this->table_post = $this->blog->prefix . 'post';
     }
 
-    public function add($links, $positions) {
+    public function add($links, $positions): void
+    {
         $cur = $this->con->openCursor($this->table);
 
-        $strReq = 'DELETE FROM '.$this->table;
-        $strReq .= ' WHERE post_id='.$this->post_id;
+        $strReq = 'DELETE FROM ' . $this->table;
+        $strReq .= ' WHERE post_id=' . $this->post_id;
         $rs = $this->con->execute($strReq);
 
         foreach ($links as $link) {
             $cur->blog_id = (string) $this->blog->id;
             $cur->post_id = (int) $this->post_id;
 
-            $strReq = 'SELECT MAX(id) FROM '.$this->table;
+            $strReq = 'SELECT MAX(id) FROM ' . $this->table;
             $rs = $this->con->select($strReq);
             $cur->id = (integer) $rs->f(0) + 1;
 
@@ -54,37 +51,40 @@ class relatedLinks
         $this->blog->triggerBlog();
     }
 
-    public function removeLink($link_id) {
-        $cur = $this->con->openCursor($this->table);
+    public function removeLink($link_id): void
+    {
+        $this->con->openCursor($this->table);
 
-        $strReq = 'DELETE FROM '.$this->table;
-        $strReq .= ' WHERE post_id='.$this->post_id;
-        $strReq .= ' AND link='.$link_id;
+        $strReq = 'DELETE FROM ' . $this->table;
+        $strReq .= ' WHERE post_id=' . $this->post_id;
+        $strReq .= ' AND link=' . $link_id;
 
-        $rs = $this->con->execute($strReq);
+        $this->con->execute($strReq);
         $this->blog->triggerBlog();
     }
 
-    public function removeLinks() {
-        $cur = $this->con->openCursor($this->table);
+    public function removeLinks(): void
+    {
+        $this->con->openCursor($this->table);
 
-        $strReq = 'DELETE FROM '.$this->table;
-        $strReq .= ' WHERE post_id='.$this->post_id;
+        $strReq = 'DELETE FROM ' . $this->table;
+        $strReq .= ' WHERE post_id=' . $this->post_id;
 
-        $rs = $this->con->execute($strReq);
+        $this->con->execute($strReq);
         $this->blog->triggerBlog();
     }
 
-    public function addLink($link_id) {
+    public function addLink($link_id): void
+    {
         $cur = $this->con->openCursor($this->table);
         $cur->blog_id = (string) $this->blog->id;
         $cur->post_id = (int) $this->post_id;
 
-        $strReq = 'SELECT MAX(id) FROM '.$this->table;
+        $strReq = 'SELECT MAX(id) FROM ' . $this->table;
         $rs = $this->con->select($strReq);
         $cur->id = (integer) $rs->f(0) + 1;
 
-        $strReq = 'SELECT MAX(position) FROM '.$this->table;
+        $strReq = 'SELECT MAX(position) FROM ' . $this->table;
         $rs = $this->con->select($strReq);
         $cur->position = (integer) $rs->f(0) + 1;
 
@@ -94,17 +94,18 @@ class relatedLinks
         $this->blog->triggerBlog();
     }
 
-    public function getList($ids=array()) {
-        $strReq =  'SELECT link, position, post_title AS title, post_url as url';
+    public function getList($ids = [])
+    {
+        $strReq = 'SELECT link, position, post_title AS title, post_url as url';
         $strReq .= ',post_excerpt_xhtml, post_content_xhtml';
-        $strReq .= ' FROM '.$this->table.' AS R';
-        $strReq .= ' LEFT JOIN '.$this->table_post.' AS P';
+        $strReq .= ' FROM ' . $this->table . ' AS R';
+        $strReq .= ' LEFT JOIN ' . $this->table_post . ' AS P';
         $strReq .= ' ON P.post_id=R.link';
-        $strReq .= ' WHERE R.blog_id = \''.$this->con->escape($this->blog->id).'\'';
-        if (count($ids)>0) {
-            $strReq .= ' AND P.post_id in ('.implode(',', $ids).')';
+        $strReq .= ' WHERE R.blog_id = \'' . $this->con->escape($this->blog->id) . '\'';
+        if (count($ids) > 0) {
+            $strReq .= ' AND P.post_id in (' . implode(',', $ids) . ')';
         } else {
-            $strReq .= ' AND R.post_id='.$this->post_id;
+            $strReq .= ' AND R.post_id=' . $this->post_id;
         }
         $strReq .= ' ORDER BY position asc';
 
@@ -114,12 +115,13 @@ class relatedLinks
         return $rs;
     }
 
-    public function getAllLinks($count_only=true) {
-        $strReq =  'SELECT Q.post_title as post_title, Q.post_id as post_id, count(link) as nb_links';
-        $strReq .= ' FROM '.$this->table.' AS R';
-        $strReq .= ' LEFT JOIN '.$this->table_post.' AS Q';
+    public function getAllLinks($count_only = true)
+    {
+        $strReq = 'SELECT Q.post_title as post_title, Q.post_id as post_id, count(link) as nb_links';
+        $strReq .= ' FROM ' . $this->table . ' AS R';
+        $strReq .= ' LEFT JOIN ' . $this->table_post . ' AS Q';
         $strReq .= ' ON Q.post_id=R.post_id';
-        $strReq .= ' WHERE R.blog_id = \''.$this->con->escape($this->blog->id).'\'';
+        $strReq .= ' WHERE R.blog_id = \'' . $this->con->escape($this->blog->id) . '\'';
         $strReq .= ' GROUP BY R.post_id, post_title, Q.post_id';
 
         $rs = $this->con->select($strReq);

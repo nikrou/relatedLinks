@@ -1,37 +1,25 @@
 <?php
-// +-----------------------------------------------------------------------+
-// | related Links  - a plugin for Dotclear                                |
-// +-----------------------------------------------------------------------+
-// | Copyright(C) 2010-2014 Nicolas Roudaire        http://www.nikrou.net  |
-// +-----------------------------------------------------------------------+
-// | This program is free software; you can redistribute it and/or modify  |
-// | it under the terms of the GNU General Public License version 2 as     |
-// | published by the Free Software Foundation                             |
-// |                                                                       |
-// | This program is distributed in the hope that it will be useful, but   |
-// | WITHOUT ANY WARRANTY; without even the implied warranty of            |
-// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      |
-// | General Public License for more details.                              |
-// |                                                                       |
-// | You should have received a copy of the GNU General Public License     |
-// | along with this program; if not, write to the Free Software           |
-// | Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,            |
-// | MA 02110-1301 USA.                                                    |
-// +-----------------------------------------------------------------------+
+/*
+ * This file is part of relatedLinks plugin, for dotclear
+ *
+ * Copyright(c) Nicolas Roudaire  https://www.nikrou.net/
+ * Licensed under the GPL version 2.0 license.
+ *
+ * For the full copyright and license information, please view the COPYING
+ * file that was distributed with this source code.
+ */
 
-if (!defined('DC_RC_PATH')) { return; }
+dcCore::app()->blog->settings->addNameSpace('relatedlinks');
+if (dcCore::app()->blog->settings->relatedlinks->active) {
+    dcCore::app()->tpl->addBlock('RelatedLinks', [tplRelatedLinks::class, 'relatedLinks']);
+    dcCore::app()->tpl->addBlock('RelatedLinksIf', [tplRelatedLinks::class, 'relatedLinksIf']);
+    dcCore::app()->tpl->addValue('RelatedLinkTitle', [tplRelatedLinks::class, 'relatedLinkTitle']);
+    dcCore::app()->tpl->addValue('RelatedLinkURL', [tplRelatedLinks::class, 'relatedLinkURL']);
+    dcCore::app()->tpl->addValue('RelatedLinkImage', [tplRelatedLinks::class, 'relatedLinkImage']);
 
-$core->blog->settings->addNameSpace('relatedlinks');
-if ($core->blog->settings->relatedlinks->active) {
-    $core->tpl->addBlock('RelatedLinks', array('tplRelatedLinks','relatedLinks'));
-    $core->tpl->addBlock('RelatedLinksIf', array('tplRelatedLinks','relatedLinksIf'));
-    $core->tpl->addValue('RelatedLinkTitle', array('tplRelatedLinks','relatedLinkTitle'));
-    $core->tpl->addValue('RelatedLinkURL', array('tplRelatedLinks','relatedLinkURL'));
-    $core->tpl->addValue('RelatedLinkImage', array('tplRelatedLinks','relatedLinkImage'));
-
-    if ($core->blog->settings->relatedlinks->automatic_content) {
-        $core->addBehavior('publicEntryAfterContent',array('relatedLinksBehaviors','publicEntryAfterContent'));
+    if (dcCore::app()->blog->settings->relatedlinks->automatic_content) {
+        dcCore::app()->addBehavior('publicEntryAfterContent', [relatedLinksBehaviors::class, 'publicEntryAfterContent']);
     }
 }
 
-require dirname(__FILE__).'/_widgets.php';
+include(__DIR__ . '/_widgets.php');

@@ -1,40 +1,28 @@
 <?php
-// +-----------------------------------------------------------------------+
-// | related Links  - a plugin for Dotclear                                |
-// +-----------------------------------------------------------------------+
-// | Copyright(C) 2010-2014 Nicolas Roudaire        http://www.nikrou.net  |
-// +-----------------------------------------------------------------------+
-// | This program is free software; you can redistribute it and/or modify  |
-// | it under the terms of the GNU General Public License version 2 as     |
-// | published by the Free Software Foundation                             |
-// |                                                                       |
-// | This program is distributed in the hope that it will be useful, but   |
-// | WITHOUT ANY WARRANTY; without even the implied warranty of            |
-// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      |
-// | General Public License for more details.                              |
-// |                                                                       |
-// | You should have received a copy of the GNU General Public License     |
-// | along with this program; if not, write to the Free Software           |
-// | Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,            |
-// | MA 02110-1301 USA.                                                    |
-// +-----------------------------------------------------------------------+
+/*
+ * This file is part of relatedLinks plugin, for dotclear
+ *
+ * Copyright(c) Nicolas Roudaire  https://www.nikrou.net/
+ * Licensed under the GPL version 2.0 license.
+ *
+ * For the full copyright and license information, please view the COPYING
+ * file that was distributed with this source code.
+ */
 
-if (!defined('DC_CONTEXT_ADMIN')) { return; }
-
-$_menu['Plugins']->addItem(
+dcCore::app()->menu[dcAdmin::MENU_PLUGINS]->addItem(
     'Related Links',
     'plugin.php?p=relatedLinks',
     'index.php?pf=relatedLinks/img/icon.png',
-    preg_match('/plugin.php\?p=relatedLinks/',$_SERVER['REQUEST_URI']),
-    $core->auth->check('usage,contentadmin', $core->blog->id)
+    preg_match('/plugin.php\?p=relatedLinks/', $_SERVER['REQUEST_URI']),
+    dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([dcAuth::PERMISSION_USAGE, dcAuth::PERMISSION_CONTENT_ADMIN]), dcCore::app()->blog->id)
 );
 
-$core->blog->settings->addNameSpace('relatedlinks');
-if ($core->blog->settings->relatedlinks->active) {
-    $core->addBehavior('adminPostForm', array('relatedLinksBehaviors','adminPostForm'));
-    $core->addBehavior('adminPostHeaders', array('relatedLinksBehaviors','adminPostHeaders'));
-    $core->addBehavior('adminAfterPostCreate',array('relatedLinksBehaviors','setRelatedLinks'));
-    $core->addBehavior('adminAfterPostUpdate',array('relatedLinksBehaviors','setRelatedLinks'));
+dcCore::app()->blog->settings->addNameSpace('relatedlinks');
+if (dcCore::app()->blog->settings->relatedlinks->active) {
+    dcCore::app()->addBehavior('adminPostForm', [relatedLinksBehaviors::class, 'adminPostForm']);
+    dcCore::app()->addBehavior('adminPostHeaders', [relatedLinksBehaviors::class, 'adminPostHeaders']);
+    dcCore::app()->addBehavior('adminAfterPostCreate', [relatedLinksBehaviors::class, 'setRelatedLinks']);
+    dcCore::app()->addBehavior('adminAfterPostUpdate', [relatedLinksBehaviors::class, 'setRelatedLinks']);
 }
 
-require dirname(__FILE__).'/_widgets.php';
+include(__DIR__ . '/_widgets.php');

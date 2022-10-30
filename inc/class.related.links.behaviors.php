@@ -1,105 +1,93 @@
 <?php
-// +-----------------------------------------------------------------------+
-// | related Links  - a plugin for Dotclear                                |
-// +-----------------------------------------------------------------------+
-// | Copyright(C) 2010-2018 Nicolas Roudaire       https://www.nikrou.net  |
-// +-----------------------------------------------------------------------+
-// | This program is free software; you can redistribute it and/or modify  |
-// | it under the terms of the GNU General Public License version 2 as     |
-// | published by the Free Software Foundation                             |
-// |                                                                       |
-// | This program is distributed in the hope that it will be useful, but   |
-// | WITHOUT ANY WARRANTY; without even the implied warranty of            |
-// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      |
-// | General Public License for more details.                              |
-// |                                                                       |
-// | You should have received a copy of the GNU General Public License     |
-// | along with this program; if not, write to the Free Software           |
-// | Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,            |
-// | MA 02110-1301 USA.                                                    |
-// +-----------------------------------------------------------------------+
+/*
+ * This file is part of relatedLinks plugin, for dotclear
+ *
+ * Copyright(c) Nicolas Roudaire  https://www.nikrou.net/
+ * Licensed under the GPL version 2.0 license.
+ *
+ * For the full copyright and license information, please view the COPYING
+ * file that was distributed with this source code.
+ */
 
 class relatedLinksBehaviors
 {
-	public static function adminPostHeaders() {
-		global $core;
-
-		$plugin_root = html::stripHostURL($core->blog->getQmarkURL().'pf=relatedLinks');
-		$res = '<script>';
-		$res .= 'var rl_text_confirm_remove = \''.__('Are you sure you want to remove this post?').'\';';
-		$res .= 'var rl_text_confirm_remove_all = \''.__('Are you sure you want to remove all posts?').'\';';
-		$res .= '</script>';
+    public static function adminPostHeaders()
+    {
+        $plugin_root = html::stripHostURL(dcCore::app()->blog->getQmarkURL() . 'pf=relatedLinks');
+        $res = '<script>';
+        $res .= 'var rl_text_confirm_remove = \'' . __('Are you sure you want to remove this post?') . '\';';
+        $res .= 'var rl_text_confirm_remove_all = \'' . __('Are you sure you want to remove all posts?') . '\';';
+        $res .= '</script>';
         $res .= '<script src="js/jquery/jquery-ui.custom.js"></script>';
-		$res .= sprintf('<script src="%s"></script>', $plugin_root.'/js/admin_post_form.js');
-		$res .= sprintf('<link rel="stylesheet" media="screen" type="text/css" href="%s"/>', $plugin_root.'/css/related_link.css');
+        $res .= sprintf('<script src="%s"></script>', $plugin_root . '/js/admin_post_form.js');
+        $res .= sprintf('<link rel="stylesheet" media="screen" type="text/css" href="%s"/>', $plugin_root . '/css/related_link.css');
 
-		return $res;
-	}
+        return $res;
+    }
 
-	public static function adminPostForm($post) {
-		global $core;
+    public static function adminPostForm($post)
+    {
+        $related_links = null;
+        $related_links_ids = '';
+        $add_post = '';
 
-		$related_links = null;
-		$related_links_ids = '';
-		$add_post = '';
+        if ($post != null) {
+            $manager = new relatedLinks($post->post_id);
+            $related_links = $manager->getList();
+            $ids = [];
+            while ($related_links->fetch()) {
+                $ids[] = $related_links->link;
+            }
+            $related_links->moveStart();
+            $related_links_ids = implode('|', $ids);
+        } else {
+            if (!empty($_POST['related_links_ids'])) {
+                $links = explode('|', $_POST['related_links_ids']);
+                $manager = new relatedLinks($post);
+                $related_links = $manager->getList($links);
+                $related_links_ids = $_POST['related_links_ids'];
+            }
+        }
 
-		if ($post!=null) {
-			$manager = new relatedLinks($core, $post->post_id);
-			$related_links = $manager->getList();
-			$ids = array();
-			while ($related_links->fetch()) {
-				$ids[] = $related_links->link;
-			}
-			$related_links->moveStart();
-			$related_links_ids = implode('|', $ids);
-		} else {
-			if (!empty($_POST['related_links_ids'])) {
-				$links = explode('|', $_POST['related_links_ids']);
-				$manager = new relatedLinks($core, $post);
-				$related_links = $manager->getList($links);
-				$related_links_ids = $_POST['related_links_ids'];
-			}
-		}
+        include(__DIR__ . '/../tpl/admin_post_form.tpl');
+    }
 
-		include(dirname(__FILE__).'/../tpl/admin_post_form.tpl');
-	}
+    public static function setRelatedLinks($cur, $post_id)
+    {
+        $post_id = (integer) $post_id;
 
-	public static function setRelatedLinks($cur, $post_id) {
-		global $core;
+        if (!empty($_POST['related_links_ids'])) {
+            $links = explode('|', $_POST['related_links_ids']);
+            $related_links = new relatedLinks($post_id);
+            $related_links->add($links, $_POST['related_link_rank']);
+        }
+    }
 
-		$post_id = (integer) $post_id;
+    public static function publicEntryAfterContent()
+    {
+        if (dcCore::app()->url->type == 'default' || dcCore::app()->url->type == 'default-page') {
+            return;
+        }
 
-		if (!empty($_POST['related_links_ids'])) {
-			$links = explode('|', $_POST['related_links_ids']);
-			$related_links = new relatedLinks($core, $post_id);
-			$related_links->add($links, $_POST['related_link_rank']);
-		}
-	}
-
-	public static function publicEntryAfterContent($core, $_ctx) {
-		if ($core->url->type == 'default' || $core->url->type == 'default-page') {
-			return;
-		}
-
-        if ($core->blog->settings->relatedlinks->content_with_image) {
+        if (dcCore::app()->blog->settings->relatedlinks->content_with_image) {
             $tpl = 'inc_related_links_with_images.html';
         } else {
             $tpl = 'inc_related_links.html';
         }
 
-        $tplset = $core->themes->moduleInfo($core->blog->settings->system->theme, 'tplset');
-        if (!empty($tplset) && is_dir(dirname(__FILE__).'/../default-templates/'.$tplset)) {
-            $core->tpl->setPath($core->tpl->getPath(), dirname(__FILE__).'/../default-templates/'.$tplset);
+        $tplset = dcCore::app()->themes->moduleInfo(dcCore::app()->blog->settings->system->theme, 'tplset');
+        if (!empty($tplset) && is_dir(__DIR__ . '/../default-templates/' . $tplset)) {
+            dcCore::app()->tpl->setPath(dcCore::app()->tpl->getPath(), __DIR__ . '/../default-templates/' . $tplset);
         } else {
-            $core->tpl->setPath($core->tpl->getPath(), dirname(__FILE__).'/../default-templates/'.DC_DEFAULT_TPLSET);
+            dcCore::app()->tpl->setPath(dcCore::app()->tpl->getPath(), __DIR__ . '/../default-templates/' . DC_DEFAULT_TPLSET);
         }
-		$tpl_file = $core->tpl->getFilePath($tpl);
+        $tpl_file = dcCore::app()->tpl->getFilePath($tpl);
 
-		if (!$tpl_file) {
-			throw new Exception('Unable to find template ');
-		}
-		$_ctx->current_tpl = $tpl;
+        if (!$tpl_file) {
+            throw new Exception('Unable to find template ');
+        }
+        dcCore::app()->ctx->current_tpl = $tpl;
 
-		echo $core->tpl->getData($_ctx->current_tpl);
-	}
+        echo dcCore::app()->tpl->getData(dcCore::app()->ctx->current_tpl);
+    }
 }

@@ -1,32 +1,23 @@
 <?php
-// +-----------------------------------------------------------------------+
-// | related Links  - a plugin for Dotclear                                |
-// +-----------------------------------------------------------------------+
-// | Copyright(C) 2010-2014 Nicolas Roudaire        http://www.nikrou.net  |
-// +-----------------------------------------------------------------------+
-// | This program is free software; you can redistribute it and/or modify  |
-// | it under the terms of the GNU General Public License version 2 as     |
-// | published by the Free Software Foundation                             |
-// |                                                                       |
-// | This program is distributed in the hope that it will be useful, but   |
-// | WITHOUT ANY WARRANTY; without even the implied warranty of            |
-// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      |
-// | General Public License for more details.                              |
-// |                                                                       |
-// | You should have received a copy of the GNU General Public License     |
-// | along with this program; if not, write to the Free Software           |
-// | Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,            |
-// | MA 02110-1301 USA.                                                    |
-// +-----------------------------------------------------------------------+
+/*
+ * This file is part of relatedLinks plugin, for dotclear
+ *
+ * Copyright(c) Nicolas Roudaire  https://www.nikrou.net/
+ * Licensed under the GPL version 2.0 license.
+ *
+ * For the full copyright and license information, please view the COPYING
+ * file that was distributed with this source code.
+ */
 
-if (!defined('DC_RC_PATH')) { return; }
+Clearbricks::lib()->autoload([
 
-$__autoload['relatedLinksBehaviors'] = dirname(__FILE__).'/inc/class.related.links.behaviors.php';
-$__autoload['relatedLinks'] = dirname(__FILE__).'/inc/class.related.links.php';
-$__autoload['tplRelatedLinks'] = dirname(__FILE__).'/inc/class.tpl.related.links.php';
-$__autoload['relatedLinksRestMethods'] = dirname(__FILE__).'/inc/class.related.links.rest.methods.php';
+    'relatedLinksBehaviors' => __DIR__ . '/inc/class.related.links.behaviors.php',
+    'relatedLinks' => __DIR__ . '/inc/class.related.links.php',
+    'tplRelatedLinks' => __DIR__ . '/inc/class.tpl.related.links.php',
+    'relatedLinksRestMethods' => __DIR__ . '/inc/class.related.links.rest.methods.php',
+]);
 
-$core->rest->addFunction('addRelatedLink',array('relatedLinksRestMethods','addRelatedLink'));
-$core->rest->addFunction('removeRelatedLink',array('relatedLinksRestMethods','removeRelatedLink'));
-$core->rest->addFunction('removeRelatedLinks',array('relatedLinksRestMethods','removeRelatedLinks'));
-$core->rest->addFunction('getRelatedLinks',array('relatedLinksRestMethods','getRelatedLinks'));
+$core->rest->addFunction('addRelatedLink', [relatedLinksRestMethods::class, 'addRelatedLink']);
+$core->rest->addFunction('removeRelatedLink', [relatedLinksRestMethods::class, 'removeRelatedLink']);
+$core->rest->addFunction('removeRelatedLinks', [relatedLinksRestMethods::class, 'removeRelatedLinks']);
+$core->rest->addFunction('getRelatedLinks', [relatedLinksRestMethods::class, 'getRelatedLinks']);

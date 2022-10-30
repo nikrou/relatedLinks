@@ -7,16 +7,16 @@
     <?php echo dcPage::jsLoad('index.php?pf=relatedLinks/js/related_links_list.js');?>
   </head>
   <body>
-      <?php echo dcPage::breadcrumb(array(html::escapeHTML($core->blog->name) => '',__('relatedLinks') => '')).dcPage::notices();?>
+      <?php echo dcPage::breadcrumb(array(html::escapeHTML(dcCore::app()->blog->name) => '',__('relatedLinks') => '')).dcPage::notices();?>
       <?php if (!empty($message)):?>
       <p class="message"><?php echo $message;?></p>
       <?php endif;?>
 
     <div class="multi-part" id="relatedlinks_settings" title="<?php echo __('Settings');?>">
-      <form action="<?php echo $p_url;?>" method="post" enctype="multipart/form-data">
+      <form action="<?php echo dcCore::app()->admin->getPageURL();?>" method="post" enctype="multipart/form-data">
 	<div class="fieldset">
 	  <h3><?php echo __('Plugin activation'); ?></h3>
-	  <p class="field">
+	  <p>
 	    <?php echo form::checkbox('relatedlinks_active', 1, $relatedlinks_active);?>
 	    <label class="classic" for="relatedlinks_active"><?php echo __('Enable Related Links plugin');?></label>
 	  </p>
@@ -45,7 +45,7 @@
 	</div>
 	<?php endif;?>
 	<?php echo form::hidden('p','relatedLinks');?>
-	<?php echo $core->formNonce();?>
+	<?php echo dcCore::app()->formNonce();?>
 	<input type="submit" name="saveconfig" value="<?php echo __('Save configuration'); ?>" />
       </form>
     </div>
@@ -53,13 +53,13 @@
     <div class="multi-part" id="relatedlinks_links" title="<?php echo __('Links'); ?>">
       <p><?php echo __('Posts with related links');?></p>
       <?php if (!$related_links->isEmpty()):?>
-      <form action="<?php echo $p_url;?>" method="post">
+      <form action="<?php echo dcCore::app()->admin->getPageURL();?>" method="post">
 	<ul id="related-links-expandable">
 	  <?php while ($related_links->fetch()):?>
 	  <li id="<?php echo $related_links->post_id;?>">
 	    <img src="images/expand.png" class="related-link-expand" alt=""/>
 	    <?php echo form::checkbox('related_links_list[]', $related_links->post_id);?>
-	    <a class="my_class" href="<?php echo $core->getPostAdminURL('post', $related_links->post_id);?>">
+	    <a class="my_class" href="<?php echo dcCore::app()->getPostAdminURL('post', $related_links->post_id);?>">
 	      <?php echo $related_links->post_title;?>
 	    </a>
 	    &nbsp;(<?php echo $related_links->nb_links;?>)
@@ -71,7 +71,7 @@
 	  <p class="col checkboxes-helpers"></p>
 	  <p class="col right">
 	    <?php echo form::combo('action',$combo_action);?>
-	    <?php echo $core->formNonce();?>
+	    <?php echo dcCore::app()->formNonce();?>
 	    <input type="submit" value="<?php echo __('ok');?>"/>
 	  </p>
 	</div>
@@ -106,12 +106,12 @@
 	<?php echo __('If you want more informations on that plugin or have new ideas to develope it, or want to submit a bug or need help (to install or configure it) or for anything else ...');?></p>
       <p>
 	<?php printf(__('Go to %sthe dedicated page%s in'),
-	      '<a href="http://www.nikrou.net/pages/relatedLinks">',
+	      '<a href="https://www.nikrou.net/pages/relatedLinks">',
 	      '</a>');?>
-	<a href="http://www.nikrou.net/">Le journal de nikrou</a>
+	<a href="https://www.nikrou.net/">Le journal de nikrou</a>
       </p>
       <p><?php echo __('Made by:');?>
-	<a href="http://www.nikrou.net/contact">Nicolas</a> (nikrou)
+	<a href="https://www.nikrou.net/contact">Nicolas</a> (nikrou)
       </p>
     </div>
     <?php endif;?>
