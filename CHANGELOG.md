@@ -1,3 +1,7 @@
+# relatedLinks 1.4.1 - 2023-01-22
+
+- Fix issue when using images in related links. Thans to Tomek. Close #3
+
 # relatedLinks 1.4.0 - 2022-10-30
 
 - Make code compatible with dotclear 2.24

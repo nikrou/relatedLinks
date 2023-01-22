@@ -112,6 +112,7 @@ class tplRelatedLinks
         } else {
             $res .= "\$params['content_only'] = 0;";
         }
+
         $res .= ' echo tplRelatedLinks::EntryFirstImageHelper(dcCore::app()->ctx->related_links, $params);';
         $res .= '?>';
 
@@ -126,10 +127,11 @@ class tplRelatedLinks
 	        if (!preg_match('/^' . $sizes . '$/', $params['size'])) {
 	            $params['size'] = 's';
 	        }
+	        $p_url = dcCore::app()->blog->settings->system->public_url;
 	        $p_site = preg_replace('#^(.+?//.+?)/(.*)$#', '$1', dcCore::app()->blog->url);
 	        $p_root = dcCore::app()->blog->public_path;
 
-	        $pattern = '(?:' . preg_quote($p_site, '/') . ')?' . preg_quote(dcCore::app()->admin->getPageURL(), '/');
+	        $pattern = '(?:' . preg_quote($p_site, '/') . ')?' . preg_quote($p_url, '/');
 	        $pattern = sprintf('/<img.+?src="%s(.*?\.(?:jpg|jpeg|gif|png))"[^>]+/msui', $pattern);
 
 	        $src = '';
@@ -143,7 +145,7 @@ class tplRelatedLinks
 	            foreach ($m[1] as $i => $img) {
 	                if (($src = self::ContentFirstImageLookup($p_root, $img, $params['size'])) !== false) {
 	                    $dirname = str_replace('\\', '/', dirname($img));
-	                    $src = dcCore::app()->admin->getPageURL() . ($dirname != '/' ? $dirname : '') . '/' . $src;
+	                    $src = $p_url . ($dirname != '/' ? $dirname : '') . '/' . $src;
 	                    if (preg_match('/alt="([^"]+)"/', $m[0][$i], $malt)) {
 	                        $alt = $malt[1];
 	                    }
