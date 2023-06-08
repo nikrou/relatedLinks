@@ -1,3 +1,7 @@
+# relatedLinks 1.4.2 - 2023-06-08
+
+- Fix issue because of deprecated use of $core. Thanks to Tomek.
+
 # relatedLinks 1.4.1 - 2023-01-22
 
 - Fix issue when using images in related links. Thans to Tomek. Close #3

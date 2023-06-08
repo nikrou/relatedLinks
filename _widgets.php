@@ -9,8 +9,8 @@
  * file that was distributed with this source code.
  */
 
-$core->addBehavior('initWidgets', [relatedLinksWidgets::class, 'initWidgets']);
-$core->addBehavior('initDefaultWidgets', [relatedLinksWidgets::class, 'initDefaultWidgets']);
+dcCore::app()->addBehavior('initWidgets', [relatedLinksWidgets::class, 'initWidgets']);
+dcCore::app()->addBehavior('initDefaultWidgets', [relatedLinksWidgets::class, 'initDefaultWidgets']);
 
 class relatedLinksWidgets
 {

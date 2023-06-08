@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+use Dotclear\Helper\Clearbricks;
+
 Clearbricks::lib()->autoload([
 
     'relatedLinksBehaviors' => __DIR__ . '/inc/class.related.links.behaviors.php',
@@ -17,7 +19,7 @@ Clearbricks::lib()->autoload([
     'relatedLinksRestMethods' => __DIR__ . '/inc/class.related.links.rest.methods.php',
 ]);
 
-$core->rest->addFunction('addRelatedLink', [relatedLinksRestMethods::class, 'addRelatedLink']);
-$core->rest->addFunction('removeRelatedLink', [relatedLinksRestMethods::class, 'removeRelatedLink']);
-$core->rest->addFunction('removeRelatedLinks', [relatedLinksRestMethods::class, 'removeRelatedLinks']);
-$core->rest->addFunction('getRelatedLinks', [relatedLinksRestMethods::class, 'getRelatedLinks']);
+dcCore::app()->rest->addFunction('addRelatedLink', [relatedLinksRestMethods::class, 'addRelatedLink']);
+dcCore::app()->rest->addFunction('removeRelatedLink', [relatedLinksRestMethods::class, 'removeRelatedLink']);
+dcCore::app()->rest->addFunction('removeRelatedLinks', [relatedLinksRestMethods::class, 'removeRelatedLinks']);
+dcCore::app()->rest->addFunction('getRelatedLinks', [relatedLinksRestMethods::class, 'getRelatedLinks']);
