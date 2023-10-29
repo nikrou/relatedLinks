@@ -12,7 +12,7 @@
   float: left;
   cursor: move;
   width: 100%;
-  background: transparent url('index.php?pf=relatedLinks/img/drag.png') no-repeat 0 0;
+  background: transparent url('index.php?pf=relatedLinks/css/imgs/drag.png') no-repeat 0 5px;
 }
 
 #content pre {
@@ -21,6 +21,11 @@
   background-color: #ccc;
   width: 800px;
   overflow: auto;
+}
+
+.related-link-expand {
+  width: 20px;
+  height: 20px;
 }
 
 #related-links-expandable {

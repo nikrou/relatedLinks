@@ -9,16 +9,27 @@
  * file that was distributed with this source code.
  */
 
-class tplRelatedLinks
+declare(strict_types=1);
+
+namespace Dotclear\Plugin\relatedLinks;
+
+use Dotclear\Database\StaticRecord;
+use Dotclear\Helper\File\Path;
+use Dotclear\Helper\Html\Html;
+use dcCore;
+use dcMedia;
+use Dotclear\Plugin\widgets\WidgetsElement;
+
+class Template
 {
-    public static function widget($w)
+    public static function widget(WidgetsElement $w): string
     {
-        if (!dcCore::app()->blog->settings->relatedlinks->active) {
-            return;
+        if (!My::settings()->active) {
+            return '';
         }
 
-        if (dcCore::app()->url->type != 'post' || dcCore::app()->ctx->related_links->isEmpty()) {
-            return;
+        if (dcCore::app()->url->type !== 'post' || dcCore::app()->ctx->related_links->isEmpty()) {
+            return '';
         }
 
         $res = '';
@@ -31,25 +42,21 @@ class tplRelatedLinks
                 '<li><a href="%s">%s</a></li>',
                 dcCore::app()->blog->url . dcCore::app()->getPostPublicURL(
                     'post',
-                    html::sanitizeURL(dcCore::app()->ctx->related_links->url)
+                    Html::sanitizeURL(dcCore::app()->ctx->related_links->url)
                 ),
                 dcCore::app()->ctx->related_links->title
             );
         }
         $res .= '</ul>';
 
-        if (version_compare(dcCore::app()->getVersion(), '2.6', '>=')) {
-            return '<div class="related_links">' . $res . '</div>';
-        } else {
-            return $w->renderDiv($w->content_only, 'related-links-widget ' . $w->class, '', $res);
-        }
+        return $w->renderDiv((bool) $w->content_only, 'related-links-widget ' . $w->class, '', $res);
     }
 
-    public static function relatedLinksIf($attr, $content)
+    public static function relatedLinksIf(array $attr, string $content): string
     {
         $res = "<?php\n";
-        $res .= 'if (dcCore::app()->blog->settings->relatedlinks->active && dcCore::app()->url->type==\'post\'):';
-        $res .= 'dcCore::app()->ctx->related_links = new relatedLinks(dcCore::app()->ctx->posts->post_id);';
+        $res .= 'if (Dotclear\Plugin\relatedLinks\My::settings()->active && dcCore::app()->url->type==\'post\'):';
+        $res .= 'dcCore::app()->ctx->related_links = new Dotclear\Plugin\relatedLinks\RelatedLinks(dcCore::app()->ctx->posts->post_id);';
         $res .= 'dcCore::app()->ctx->related_links = dcCore::app()->ctx->related_links->getList();';
         $res .= 'if (!dcCore::app()->ctx->related_links->isEmpty()):?>' . $content . '<?php endif;?>';
         $res .= '<?php endif;?>';
@@ -57,18 +64,18 @@ class tplRelatedLinks
         return $res;
     }
 
-    public static function relatedLinks($attr, $content)
+    public static function relatedLinks(array $attr, string $content): string
     {
         return '<?php while (dcCore::app()->ctx->related_links->fetch()):?>' . $content . '<?php endwhile;?>';
     }
 
-    public static function relatedLinkURL($attr)
+    public static function relatedLinkURL(array $attr): string
     {
         $f = dcCore::app()->tpl->getFilters($attr);
-        return '<?php echo ' . sprintf($f, 'dcCore::app()->blog->url.dcCore::app()->getPostPublicURL(\'post\',html::sanitizeURL(dcCore::app()->ctx->related_links->url))') . ';?>';
+        return '<?php echo ' . sprintf($f, 'dcCore::app()->blog->url.dcCore::app()->getPostPublicURL(\'post\',Html::sanitizeURL(dcCore::app()->ctx->related_links->url))') . ';?>';
     }
 
-    public static function relatedLinkTitle($attr)
+    public static function relatedLinkTitle(array $attr): string
     {
         $f = dcCore::app()->tpl->getFilters($attr);
         return '<?php echo ' . sprintf($f, 'dcCore::app()->ctx->related_links->title') . '; ?>';
@@ -83,24 +90,22 @@ class tplRelatedLinks
       content_only	(1|0) #IMPLIED	-- Search in content entry only, not in excerpt (default 0)
       >
      */
-    public static function relatedLinkImage($attr)
+    public static function relatedLinkImage(array $attr): string
     {
-        if (!dcCore::app()->blog->settings->relatedlinks->content_with_image) {
-            return;
+        if (!My::settings()->content_with_image) {
+            return '';
         }
-
-        $f = dcCore::app()->tpl->getFilters($attr);
 
         $res = "<?php\n";
         $res .= '$params = array();';
 
         if (!empty($attr['size'])) {
-            $res .= "\$params['size'] = '" . html::escapeHTML($attr['size']) . "';";
+            $res .= "\$params['size'] = '" . Html::escapeHTML($attr['size']) . "';";
         } else {
             $res .= "\$params['size'] = '';";
         }
         if (!empty($attr['class'])) {
-            $res .= "\$params['class'] = '" . html::escapeHTML($attr['class']) . "';";
+            $res .= "\$params['class'] = '" . Html::escapeHTML($attr['class']) . "';";
         }
         if (!empty($attr['no_tag'])) {
             $res .= "\$params['no_tag'] = 1;";
@@ -113,13 +118,13 @@ class tplRelatedLinks
             $res .= "\$params['content_only'] = 0;";
         }
 
-        $res .= ' echo tplRelatedLinks::EntryFirstImageHelper(dcCore::app()->ctx->related_links, $params);';
+        $res .= ' echo Dotclear\Plugin\relatedLinks\Template::EntryFirstImageHelper(dcCore::app()->ctx->related_links, $params);';
         $res .= '?>';
 
         return $res;
     }
 
-	public static function EntryFirstImageHelper(StaticRecord $post, array $params)
+	public static function EntryFirstImageHelper(StaticRecord $post, array $params): string
 	{
 	    try {
 	        $media = new dcMedia();
@@ -168,15 +173,15 @@ class tplRelatedLinks
 	                return $res;
 	            }
 	        }
-	    } catch (Exception $e) {
+	    } catch (\Exception $e) {
 	        dcCore::app()->error->add($e->getMessage());
 	    }
 	}
 
-	private static function ContentFirstImageLookup($root, $img, $size)
+	private static function ContentFirstImageLookup(string $root, string $img, string $size): string | bool
 	{
 	    // Get base name and extension
-	    $info = path::info($img);
+	    $info = Path::info($img);
 	    $base = $info['base'];
 	    $res = false;
 
@@ -213,7 +218,7 @@ class tplRelatedLinks
 	                $res = $base . '.GIF';
 	            }
 	        }
-	    } catch (Exception $e) {
+	    } catch (\Exception $e) {
 	        dcCore::app()->error->add($e->getMessage());
 	    }
 

@@ -1,37 +1,43 @@
-$(function() {
-	$('.related-link-expand', '#related-links-expandable').click(function() {
-		var li = $(this).parent();
-		var id = li.attr('id');
+$(function () {
+  $('.related-link-expand', '#related-links-expandable').attr(
+    'src',
+    dotclear.img_plus_src
+  );
 
-		if ($(this).hasClass('expanded')) {
-			$(this).removeClass('expanded');
-			$(this).attr('src', dotclear.img_plus_src);
-			li.find('ul').slideUp();
-		} else {
-			$(this).addClass('expanded');
-			$(this).attr('src', dotclear.img_minus_src);			
-			li.find('ul').slideDown();
-		}
+  $('.related-link-expand', '#related-links-expandable').on(
+    'click',
+    function (e) {
+      var li = $(this).parent();
+      var id = li.attr('id');
 
+      if ($(this).hasClass('expanded')) {
+        $(this).removeClass('expanded');
+        $(this).attr('src', dotclear.img_plus_src);
+        li.find('ul').slideUp();
+      } else {
+        $(this).addClass('expanded');
+        $(this).attr('src', dotclear.img_minus_src);
+        li.find('ul').slideDown();
+      }
 
-		if (!li.hasClass('loaded')) {
-			$.get('services.php',
-			      {f:'getRelatedLinks',postId:id},
-			      function(data) {
-				      var rsp = $(data).children('rsp')[0];
-				      if (rsp.attributes[0].value == 'ok') {
-					      var lis = [];
-					      $(rsp).find('related_link').each(function() {
-						      lis.push('<li>'+$(this).text()+'</li>');
-					      });
-					      li.append('<ul>'+lis.join('')+'</ul>');
-					      li.addClass('loaded');
-				      } else {
-					      alert($(rsp).find('message').text());
-				      }
-			      });
-		}
+      if (!li.hasClass('loaded')) {
+        dotclear.jsonServicesGet(
+          'getRelatedLinks',
+          (data) => {
+            var lis = [];
+            data.links.forEach(function (link) {
+              lis.push('<li>' + link + '</li>');
+            });
+            li.append('<ul>' + lis.join('') + '</ul>');
+            li.addClass('loaded');
+          },
+          {
+            postId: id,
+          }
+        );
+      }
 
-		return false;
-	});
+      e.preventDefault();
+    }
+  );
 });

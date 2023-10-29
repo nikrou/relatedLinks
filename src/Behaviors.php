@@ -9,30 +9,43 @@
  * file that was distributed with this source code.
  */
 
-class relatedLinksBehaviors
+declare(strict_types=1);
+
+namespace Dotclear\Plugin\relatedLinks;
+
+use Dotclear\Core\Backend\Page;
+use dcCore;
+use Dotclear\Database\Cursor;
+use Dotclear\Database\StaticRecord;
+use form;
+
+class Behaviors
 {
-    public static function adminPostHeaders()
+    public static function adminPostHeaders(): string
     {
-        $plugin_root = html::stripHostURL(dcCore::app()->blog->getQmarkURL() . 'pf=relatedLinks');
         $res = '<script>';
         $res .= 'var rl_text_confirm_remove = \'' . __('Are you sure you want to remove this post?') . '\';';
         $res .= 'var rl_text_confirm_remove_all = \'' . __('Are you sure you want to remove all posts?') . '\';';
         $res .= '</script>';
-        $res .= '<script src="js/jquery/jquery-ui.custom.js"></script>';
-        $res .= sprintf('<script src="%s"></script>', $plugin_root . '/js/admin_post_form.js');
-        $res .= sprintf('<link rel="stylesheet" media="screen" type="text/css" href="%s"/>', $plugin_root . '/css/related_link.css');
+        $res .= Page::jsLoad('js/jquery/jquery-ui.custom.js');
+        $res .= My::jsLoad('admin_post_form.js');
+        $res .= My::cssLoad('related_links.css');
 
         return $res;
     }
 
-    public static function adminPostForm($post)
+    public static function adminPopupPosts(): string
+    {
+        return My::jsLoad('popup.js');
+    }
+
+    public static function adminPostForm(?StaticRecord $post): void
     {
         $related_links = null;
         $related_links_ids = '';
-        $add_post = '';
 
-        if ($post != null) {
-            $manager = new relatedLinks($post->post_id);
+        if ($post !== null) {
+            $manager = new RelatedLinks((int) $post->post_id);
             $related_links = $manager->getList();
             $ids = [];
             while ($related_links->fetch()) {
@@ -43,33 +56,56 @@ class relatedLinksBehaviors
         } else {
             if (!empty($_POST['related_links_ids'])) {
                 $links = explode('|', $_POST['related_links_ids']);
-                $manager = new relatedLinks($post);
+                $manager = new RelatedLinks($post);
                 $related_links = $manager->getList($links);
                 $related_links_ids = $_POST['related_links_ids'];
             }
         }
 
-        include(__DIR__ . '/../tpl/admin_post_form.tpl');
+        echo '<div class="area related-links-area clearfix">';
+        echo '<label class="bold">', __('Related Links'), '</label>';
+
+        echo '<p>';
+        echo '<button type="button" id="add-post">', __('Add new post to list'), '</button>';
+        echo '<span>&nbsp;-&nbsp;<button type="button" id="remove-all-posts">', __('Remove all posts?'), '</button></span>';
+        echo form::hidden('related_links_ids', $related_links_ids);
+        echo '</p>';
+
+        echo '<ul id="related-links-list">';
+        if (!empty($related_links) && !$related_links->isEmpty()) {
+            while ($related_links->fetch()) {
+                echo '<li class="link">';
+                echo '<input type="hidden" name="related_link_rank[', $related_links->link, ']" value="', $related_links->position, '"/>';
+                echo '<a class="post-', $related_links->link, '" href="', $related_links->url, '">', $related_links->title, '</a>';
+                echo '&nbsp;<a class="remove" href="#">[x]</a></li>';
+            }
+        } else {
+            echo '<li id="no-links">';
+            echo __('No related link yet');
+            echo '</li>';
+        }
+        echo '</ul>';
+        echo '</div>';
     }
 
-    public static function setRelatedLinks($cur, $post_id)
+    public static function setRelatedLinks(Cursor $cur, int $post_id): void
     {
         $post_id = (integer) $post_id;
 
         if (!empty($_POST['related_links_ids'])) {
             $links = explode('|', $_POST['related_links_ids']);
-            $related_links = new relatedLinks($post_id);
+            $related_links = new RelatedLinks($post_id);
             $related_links->add($links, $_POST['related_link_rank']);
         }
     }
 
-    public static function publicEntryAfterContent()
+    public static function publicEntryAfterContent(): void
     {
-        if (dcCore::app()->url->type == 'default' || dcCore::app()->url->type == 'default-page') {
+        if (dcCore::app()->url->type === 'default' || dcCore::app()->url->type === 'default-page') {
             return;
         }
 
-        if (dcCore::app()->blog->settings->relatedlinks->content_with_image) {
+        if (My::settings()->content_with_image) {
             $tpl = 'inc_related_links_with_images.html';
         } else {
             $tpl = 'inc_related_links.html';
@@ -84,7 +120,7 @@ class relatedLinksBehaviors
         $tpl_file = dcCore::app()->tpl->getFilePath($tpl);
 
         if (!$tpl_file) {
-            throw new Exception('Unable to find template ');
+            throw new \Exception('Unable to find template ');
         }
         dcCore::app()->ctx->current_tpl = $tpl;
 

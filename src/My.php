@@ -9,8 +9,12 @@
  * file that was distributed with this source code.
  */
 
-if (!empty($_GET['popup'])) {
-    include(__DIR__ . '/popup_posts.php');
-} else {
-    include(__DIR__ . '/config.php');
+declare(strict_types=1);
+
+namespace Dotclear\Plugin\relatedLinks;
+
+use Dotclear\Module\MyPlugin;
+
+class My extends MyPlugin
+{
 }

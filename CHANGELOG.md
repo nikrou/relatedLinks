@@ -1,3 +1,7 @@
+# relatedLinks 1.5.0 - 2023-10-29
+
+- Update code for dotclear 2.27
+
 # relatedLinks 1.4.2 - 2023-06-08
 
 - Fix issue because of deprecated use of $core. Thanks to Tomek.

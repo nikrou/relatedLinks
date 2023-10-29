@@ -2,3 +2,4 @@ target/
 .dist/
 /vendor/
 /bin
+/.php-cs-fixer.cache

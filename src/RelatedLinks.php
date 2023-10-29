@@ -9,15 +9,23 @@
  * file that was distributed with this source code.
  */
 
-class relatedLinks
+declare(strict_types=1);
+
+namespace Dotclear\Plugin\relatedLinks;
+
+use dbLayer;
+use dcBlog;
+use dcCore;
+use staticRecord;
+
+class RelatedLinks
 {
     private dcBlog $blog;
     private dbLayer $con;
-    private ?int $post_id;
     private string $table;
     private string $table_post;
 
-    public function __construct($post_id)
+    public function __construct(private ?int $post_id = null)
     {
         $this->blog = dcCore::app()->blog;
         $this->con = $this->blog->con;
@@ -27,7 +35,7 @@ class relatedLinks
         $this->table_post = $this->blog->prefix . 'post';
     }
 
-    public function add($links, $positions): void
+    public function add(array $links, array $positions): void
     {
         $cur = $this->con->openCursor($this->table);
 
@@ -51,7 +59,7 @@ class relatedLinks
         $this->blog->triggerBlog();
     }
 
-    public function removeLink($link_id): void
+    public function removeLink(int $link_id): void
     {
         $this->con->openCursor($this->table);
 
@@ -74,7 +82,7 @@ class relatedLinks
         $this->blog->triggerBlog();
     }
 
-    public function addLink($link_id): void
+    public function addLink(int $link_id): void
     {
         $cur = $this->con->openCursor($this->table);
         $cur->blog_id = (string) $this->blog->id;
@@ -94,7 +102,7 @@ class relatedLinks
         $this->blog->triggerBlog();
     }
 
-    public function getList($ids = [])
+    public function getList(array $ids = []): staticRecord
     {
         $strReq = 'SELECT link, position, post_title AS title, post_url as url';
         $strReq .= ',post_excerpt_xhtml, post_content_xhtml';
@@ -115,7 +123,7 @@ class relatedLinks
         return $rs;
     }
 
-    public function getAllLinks($count_only = true)
+    public function getAllLinks(): staticRecord
     {
         $strReq = 'SELECT Q.post_title as post_title, Q.post_id as post_id, count(link) as nb_links';
         $strReq .= ' FROM ' . $this->table . ' AS R';

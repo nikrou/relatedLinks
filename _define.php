@@ -13,11 +13,11 @@ $this->registerModule(
     "related Links",	// Name
     "Add related links from a post",	// Description
     "Nicolas Roudaire",	// Author
-    '1.4.2',	// Version
+    '1.5.0',	// Version
     [
-        'permissions' => dcCore::app()->auth->makePermissions([dcAuth::PERMISSION_CONTENT_ADMIN, dcPages::PERMISSION_PAGES]),
+        'permissions' => dcCore::app()->auth->makePermissions([dcAuth::PERMISSION_CONTENT_ADMIN, initPages::PERMISSION_PAGES]),
         'type' => 'plugin',
-        'dc_min' => '2.24',
-        'requires' => [['core', '2.24']],
+        'dc_min' => '2.27',
+        'requires' => [['core', '2.27']],
     ]
 );
