@@ -15,7 +15,6 @@ namespace Dotclear\Plugin\relatedLinks;
 
 use Dotclear\Core\Process;
 use dcCore;
-use Dotclear\Helper\Html\Template\Template;
 
 class Frontend extends Process
 {

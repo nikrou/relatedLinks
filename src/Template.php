@@ -52,7 +52,7 @@ class Template
         return $w->renderDiv((bool) $w->content_only, 'related-links-widget ' . $w->class, '', $res);
     }
 
-    public static function relatedLinksIf(array $attr, string $content): string
+    public static function relatedLinksIf($attr, string $content): string
     {
         $res = "<?php\n";
         $res .= 'if (Dotclear\Plugin\relatedLinks\My::settings()->active && dcCore::app()->url->type==\'post\'):';
@@ -64,18 +64,18 @@ class Template
         return $res;
     }
 
-    public static function relatedLinks(array $attr, string $content): string
+    public static function relatedLinks($attr, string $content): string
     {
         return '<?php while (dcCore::app()->ctx->related_links->fetch()):?>' . $content . '<?php endwhile;?>';
     }
 
-    public static function relatedLinkURL(array $attr): string
+    public static function relatedLinkURL($attr): string
     {
         $f = dcCore::app()->tpl->getFilters($attr);
         return '<?php echo ' . sprintf($f, 'dcCore::app()->blog->url.dcCore::app()->getPostPublicURL(\'post\',Html::sanitizeURL(dcCore::app()->ctx->related_links->url))') . ';?>';
     }
 
-    public static function relatedLinkTitle(array $attr): string
+    public static function relatedLinkTitle($attr): string
     {
         $f = dcCore::app()->tpl->getFilters($attr);
         return '<?php echo ' . sprintf($f, 'dcCore::app()->ctx->related_links->title') . '; ?>';
@@ -90,7 +90,7 @@ class Template
       content_only	(1|0) #IMPLIED	-- Search in content entry only, not in excerpt (default 0)
       >
      */
-    public static function relatedLinkImage(array $attr): string
+    public static function relatedLinkImage($attr): string
     {
         if (!My::settings()->content_with_image) {
             return '';

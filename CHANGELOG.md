@@ -1,3 +1,11 @@
+# relatedLinks 1.5.2 - 2023-10-29
+
+- links not displayed on public pages
+
+# relatedLinks 1.5.1 - 2023-10-29
+
+- Incorrect type for adminPostForm method
+
 # relatedLinks 1.5.0 - 2023-10-29
 
 - Update code for dotclear 2.27
