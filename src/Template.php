@@ -124,7 +124,7 @@ class Template
         return $res;
     }
 
-	public static function EntryFirstImageHelper(StaticRecord $post, array $params): string
+	public static function EntryFirstImageHelper(StaticRecord $post, array $params)
 	{
 	    try {
 	        $media = new dcMedia();

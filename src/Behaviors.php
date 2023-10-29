@@ -16,7 +16,7 @@ namespace Dotclear\Plugin\relatedLinks;
 use Dotclear\Core\Backend\Page;
 use dcCore;
 use Dotclear\Database\Cursor;
-use Dotclear\Database\StaticRecord;
+use Dotclear\Database\MetaRecord;
 use form;
 
 class Behaviors
@@ -39,7 +39,7 @@ class Behaviors
         return My::jsLoad('popup.js');
     }
 
-    public static function adminPostForm(?StaticRecord $post): void
+    public static function adminPostForm(?MetaRecord $post): void
     {
         $related_links = null;
         $related_links_ids = '';

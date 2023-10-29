@@ -40,16 +40,10 @@ $(function () {
       $(this).parent().remove();
 
       if ($('#id').length > 0) {
-        dotclear.jsonServicesGet(
-          'removeRelatedLink',
-          (data) => {
-            console.log('removeRelatedLink', data);
-          },
-          {
-            postId: $('#id').val(),
-            linkId: id,
-          }
-        );
+        dotclear.jsonServicesGet('removeRelatedLink', (data) => {}, {
+          postId: $('#id').val(),
+          linkId: id,
+        });
       }
     }
     return false;
@@ -104,13 +98,11 @@ $(function () {
       $('#related_links_ids').val(links.join('|'));
 
       if ($('#id').length > 0) {
-        dotclear.jsonServicesGet(
-          'addRelatedLink',
-          (data) => {
-            console.log('addRelatedLink', data);
-          },
-          { postId: $('#id').val(), linkId: data.id, position: position }
-        );
+        dotclear.jsonServicesGet('addRelatedLink', (data) => {}, {
+          postId: $('#id').val(),
+          linkId: data.id,
+          position: position,
+        });
       }
     }
   };
@@ -120,13 +112,9 @@ $(function () {
   $('#remove-all-posts').click(function () {
     if (window.confirm(rl_text_confirm_remove_all)) {
       if ($('#id').length > 0) {
-        dotclear.jsonServicesGet(
-          'removeRelatedLinks',
-          (data) => {
-            console.log('removeRelatedLinks', data);
-          },
-          { postId: $('#id').val() }
-        );
+        dotclear.jsonServicesGet('removeRelatedLinks', (data) => {}, {
+          postId: $('#id').val(),
+        });
       }
 
       $('#related_links_ids').val('');
