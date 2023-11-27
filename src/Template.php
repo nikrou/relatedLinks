@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\relatedLinks;
 
+use Exception;
 use Dotclear\Database\StaticRecord;
 use Dotclear\Helper\File\Path;
 use Dotclear\Helper\Html\Html;
-use dcCore;
-use dcMedia;
+use Dotclear\App;
 use Dotclear\Plugin\widgets\WidgetsElement;
 
 class Template
@@ -28,7 +28,7 @@ class Template
             return '';
         }
 
-        if (dcCore::app()->url->type !== 'post' || dcCore::app()->ctx->related_links->isEmpty()) {
+        if (App::url()->type !== 'post' || App::frontend()->context()->related_links->isEmpty()) {
             return '';
         }
 
@@ -37,14 +37,14 @@ class Template
             $res .= '<h2>' . $w->title . '</h2>';
         }
         $res .= '<ul class="related-links-post">';
-        while (dcCore::app()->ctx->related_links->fetch()) {
+        while (App::frontend()->context()->related_links->fetch()) {
             $res .= sprintf(
                 '<li><a href="%s">%s</a></li>',
-                dcCore::app()->blog->url . dcCore::app()->getPostPublicURL(
+                App::blog()->url() . App::postTypes()->getPostPublicURL(
                     'post',
-                    Html::sanitizeURL(dcCore::app()->ctx->related_links->url)
+                    Html::sanitizeURL(App::frontend()->context()->related_links->url)
                 ),
-                dcCore::app()->ctx->related_links->title
+                App::frontend()->context()->related_links->title
             );
         }
         $res .= '</ul>';
@@ -55,10 +55,10 @@ class Template
     public static function relatedLinksIf($attr, string $content): string
     {
         $res = "<?php\n";
-        $res .= 'if (Dotclear\Plugin\relatedLinks\My::settings()->active && dcCore::app()->url->type==\'post\'):';
-        $res .= 'dcCore::app()->ctx->related_links = new Dotclear\Plugin\relatedLinks\RelatedLinks(dcCore::app()->ctx->posts->post_id);';
-        $res .= 'dcCore::app()->ctx->related_links = dcCore::app()->ctx->related_links->getList();';
-        $res .= 'if (!dcCore::app()->ctx->related_links->isEmpty()):?>' . $content . '<?php endif;?>';
+        $res .= 'if (Dotclear\Plugin\relatedLinks\My::settings()->active && App::url()->type==\'post\'):';
+        $res .= 'App::frontend()->context()->related_links = new Dotclear\Plugin\relatedLinks\RelatedLinks(App::frontend()->context()->posts->post_id);';
+        $res .= 'App::frontend()->context()->related_links = App::frontend()->context()->related_links->getList();';
+        $res .= 'if (!App::frontend()->context()->related_links->isEmpty()):?>' . $content . '<?php endif;?>';
         $res .= '<?php endif;?>';
 
         return $res;
@@ -66,19 +66,19 @@ class Template
 
     public static function relatedLinks($attr, string $content): string
     {
-        return '<?php while (dcCore::app()->ctx->related_links->fetch()):?>' . $content . '<?php endwhile;?>';
+        return '<?php while (App::frontend()->context()->related_links->fetch()):?>' . $content . '<?php endwhile;?>';
     }
 
     public static function relatedLinkURL($attr): string
     {
-        $f = dcCore::app()->tpl->getFilters($attr);
-        return '<?php echo ' . sprintf($f, 'dcCore::app()->blog->url.dcCore::app()->getPostPublicURL(\'post\',Html::sanitizeURL(dcCore::app()->ctx->related_links->url))') . ';?>';
+        $f = App::frontend()->template()->getFilters($attr);
+        return '<?php echo ' . sprintf($f, 'App::postTypes()->getPostPublicURL(\'post\',Html::sanitizeURL(App::frontend()->context()->related_links->url))') . ';?>';
     }
 
     public static function relatedLinkTitle($attr): string
     {
-        $f = dcCore::app()->tpl->getFilters($attr);
-        return '<?php echo ' . sprintf($f, 'dcCore::app()->ctx->related_links->title') . '; ?>';
+        $f = App::frontend()->template()->getFilters($attr);
+        return '<?php echo ' . sprintf($f, 'App::frontend()->context()->related_links->title') . '; ?>';
     }
 
     /*dtd
@@ -118,7 +118,7 @@ class Template
             $res .= "\$params['content_only'] = 0;";
         }
 
-        $res .= ' echo Dotclear\Plugin\relatedLinks\Template::EntryFirstImageHelper(dcCore::app()->ctx->related_links, $params);';
+        $res .= ' echo Dotclear\Plugin\relatedLinks\Template::EntryFirstImageHelper(App::frontend()->context()->related_links, $params);';
         $res .= '?>';
 
         return $res;
@@ -127,14 +127,13 @@ class Template
 	public static function EntryFirstImageHelper(StaticRecord $post, array $params)
 	{
 	    try {
-	        $media = new dcMedia();
-	        $sizes = implode('|', array_keys($media->thumb_sizes)) . '|o';
+	        $sizes = implode('|', array_keys(App::media()->thumb_sizes)) . '|o';
 	        if (!preg_match('/^' . $sizes . '$/', $params['size'])) {
 	            $params['size'] = 's';
 	        }
-	        $p_url = dcCore::app()->blog->settings->system->public_url;
-	        $p_site = preg_replace('#^(.+?//.+?)/(.*)$#', '$1', dcCore::app()->blog->url);
-	        $p_root = dcCore::app()->blog->public_path;
+	        $p_url = App::blog()->settings()->system->public_url;
+	        $p_site = preg_replace('#^(.+?//.+?)/(.*)$#', '$1', App::blog()->url());
+	        $p_root = App::blog()->publicPath();
 
 	        $pattern = '(?:' . preg_quote($p_site, '/') . ')?' . preg_quote($p_url, '/');
 	        $pattern = sprintf('/<img.+?src="%s(.*?\.(?:jpg|jpeg|gif|png))"[^>]+/msui', $pattern);
@@ -173,8 +172,8 @@ class Template
 	                return $res;
 	            }
 	        }
-	    } catch (\Exception $e) {
-	        dcCore::app()->error->add($e->getMessage());
+	    } catch (Exception $e) {
+	        App::error()->add($e->getMessage());
 	    }
 	}
 
@@ -186,8 +185,7 @@ class Template
 	    $res = false;
 
 	    try {
-	        $media = new dcMedia();
-	        $sizes = implode('|', array_keys($media->thumb_sizes));
+	        $sizes = implode('|', array_keys(App::media()->thumb_sizes));
 	        if (preg_match('/^\.(.+)_(' . $sizes . ')$/', $base, $m)) {
 	            $base = $m[1];
 	        }
@@ -218,14 +216,14 @@ class Template
 	                $res = $base . '.GIF';
 	            }
 	        }
-	    } catch (\Exception $e) {
-	        dcCore::app()->error->add($e->getMessage());
+	    } catch (Exception $e) {
+	        App::error()->add($e->getMessage());
 	    }
 
 	    if ($res) {
 	        return $res;
 	    }
 
-        return false;
+      return false;
 	}
 }

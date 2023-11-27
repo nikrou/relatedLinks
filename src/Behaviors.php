@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\relatedLinks;
 
+use Exception;
 use Dotclear\Core\Backend\Page;
-use dcCore;
+use Dotclear\App;
 use Dotclear\Database\Cursor;
-use Dotclear\Database\MetaRecord;
 use form;
 
 class Behaviors
@@ -39,13 +39,13 @@ class Behaviors
         return My::jsLoad('popup.js');
     }
 
-    public static function adminPostForm(?MetaRecord $post): void
+    public static function adminPostForm($post): void
     {
         $related_links = null;
         $related_links_ids = '';
 
         if ($post !== null) {
-            $manager = new RelatedLinks((int) $post->post_id);
+            $manager = new RelatedLinks((int) $post->getPostId());
             $related_links = $manager->getList();
             $ids = [];
             while ($related_links->fetch()) {
@@ -101,7 +101,7 @@ class Behaviors
 
     public static function publicEntryAfterContent(): void
     {
-        if (dcCore::app()->url->type === 'default' || dcCore::app()->url->type === 'default-page') {
+        if (App::url()->type === 'default' || App::url()->type === 'default-page') {
             return;
         }
 
@@ -111,19 +111,19 @@ class Behaviors
             $tpl = 'inc_related_links.html';
         }
 
-        $tplset = dcCore::app()->themes->moduleInfo(dcCore::app()->blog->settings->system->theme, 'tplset');
+        $tplset = App::themes()->moduleInfo(App::blog()->settings()->system->theme, 'tplset');
         if (!empty($tplset) && is_dir(__DIR__ . '/../default-templates/' . $tplset)) {
-            dcCore::app()->tpl->setPath(dcCore::app()->tpl->getPath(), __DIR__ . '/../default-templates/' . $tplset);
+            App::frontend()->template()->setPath(App::frontend()->template()->getPath(), __DIR__ . '/../default-templates/' . $tplset);
         } else {
-            dcCore::app()->tpl->setPath(dcCore::app()->tpl->getPath(), __DIR__ . '/../default-templates/' . DC_DEFAULT_TPLSET);
+            App::frontend()->template()->setPath(App::frontend()->template()->getPath(), __DIR__ . '/../default-templates/' . DC_DEFAULT_TPLSET);
         }
-        $tpl_file = dcCore::app()->tpl->getFilePath($tpl);
+        $tpl_file = App::frontend()->template()->getFilePath($tpl);
 
         if (!$tpl_file) {
-            throw new \Exception('Unable to find template ');
+            throw new Exception('Unable to find template ');
         }
-        dcCore::app()->ctx->current_tpl = $tpl;
+        App::frontend()->context()->current_tpl = $tpl;
 
-        echo dcCore::app()->tpl->getData(dcCore::app()->ctx->current_tpl);
+        echo App::frontend()->template()->getData(App::frontend()->context()->current_tpl);
     }
 }

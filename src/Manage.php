@@ -17,7 +17,7 @@ use Dotclear\Core\Backend\Notices;
 use Dotclear\Core\Backend\Page;
 use Dotclear\Core\Process;
 use Dotclear\Helper\Html\Html;
-use dcCore;
+use Dotclear\App;
 use form;
 
 class Manage extends Process
@@ -69,7 +69,7 @@ class Manage extends Process
             My::cssLoad('related_links.css')
         );
 
-        echo Page::breadcrumb([Html::escapeHTML(dcCore::app()->blog->name) => '',
+        echo Page::breadcrumb([Html::escapeHTML(App::blog()->name()) => '',
             '<a href="' . My::manageUrl() . '">' . __('relatedLinks') . '</a>' => ''
         ]);
 
@@ -85,7 +85,7 @@ class Manage extends Process
                     echo '<li id="', $related_links->post_id, '">';
                     echo '<img class="related-link-expand">';
                     echo form::checkbox('related_links_list[]', $related_links->post_id);
-                    echo '<a href="', dcCore::app()->getPostAdminURL('post', $related_links->post_id), '">';
+                    echo '<a href="', App::postTypes()->getPostAdminURL('post', $related_links->post_id), '">';
                     echo $related_links->post_title;
                     echo '</a>';
                     echo '&nbsp;(', $related_links->nb_links, ')';
@@ -97,7 +97,7 @@ class Manage extends Process
                 echo '<p class="col checkboxes-helpers"></p>';
                 echo '<p class="col right">';
                 echo form::combo('action', $combo_action);
-                echo dcCore::app()->formNonce();
+                echo App::nonce()->getFormNonce();
                 echo '<input type="submit" value="', __('ok'), '"/>';
                 echo '</p>';
                 echo '</div>';

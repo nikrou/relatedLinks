@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\relatedLinks;
 
+use Exception;
 use Dotclear\Core\Backend\Notices;
 use Dotclear\Core\Process;
-use dcCore;
+use Dotclear\App;
 use form;
 
 class Config extends Process
@@ -58,12 +59,12 @@ class Config extends Process
             }
 
             Notices::addSuccessNotice(__('The configuration has been updated.'));
-            dcCore::app()->admin->url->redirect('admin.plugins', [
+            App::backend()->url()->redirect('admin.plugins', [
                 'module' => My::id(),
                 'conf' => '1'
             ]);
-        } catch(\Exception $e) {
-            dcCore::app()->error->add($e->getMessage());
+        } catch(Exception $e) {
+            App::error()->add($e->getMessage());
         }
 
         return true;
@@ -75,7 +76,7 @@ class Config extends Process
             return;
         }
 
-        if (dcCore::app()->auth->isSuperAdmin()) {
+        if (App::auth()->isSuperAdmin()) {
             echo '<div class="fieldset">';
             echo '<h3>', __('Plugin activation'), '</h3>';
             echo '<p>';

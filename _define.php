@@ -9,15 +9,19 @@
  * file that was distributed with this source code.
  */
 
+use Dotclear\App;
+use Dotclear\Core\Auth;
+use Dotclear\Plugin\pages\Pages;
+
 $this->registerModule(
     "related Links",	// Name
     "Add related links from a post",	// Description
     "Nicolas Roudaire",	// Author
-    '1.5.2',	// Version
+    '1.6.0',	// Version
     [
-        'permissions' => dcCore::app()->auth->makePermissions([dcAuth::PERMISSION_CONTENT_ADMIN, initPages::PERMISSION_PAGES]),
+        'permissions' => App::auth()->makePermissions([Auth::PERMISSION_CONTENT_ADMIN, Pages::PERMISSION_PAGES]),
         'type' => 'plugin',
-        'dc_min' => '2.27',
-        'requires' => [['core', '2.27']],
+        'dc_min' => '2.28',
+        'requires' => [['core', '2.28']],
     ]
 );

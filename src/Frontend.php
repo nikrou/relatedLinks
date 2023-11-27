@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\relatedLinks;
 
 use Dotclear\Core\Process;
-use dcCore;
+use Dotclear\App;
 
 class Frontend extends Process
 {
@@ -30,18 +30,18 @@ class Frontend extends Process
         }
 
         if (My::settings()->active) {
-            dcCore::app()->tpl->addBlock('RelatedLinks', [Template::class, 'relatedLinks']);
-            dcCore::app()->tpl->addBlock('RelatedLinksIf', [Template::class, 'relatedLinksIf']);
-            dcCore::app()->tpl->addValue('RelatedLinkTitle', [Template::class, 'relatedLinkTitle']);
-            dcCore::app()->tpl->addValue('RelatedLinkURL', [Template::class, 'relatedLinkURL']);
-            dcCore::app()->tpl->addValue('RelatedLinkImage', [Template::class, 'relatedLinkImage']);
+            App::frontend()->template()->addBlock('RelatedLinks', [Template::class, 'relatedLinks']);
+            App::frontend()->template()->addBlock('RelatedLinksIf', [Template::class, 'relatedLinksIf']);
+            App::frontend()->template()->addValue('RelatedLinkTitle', [Template::class, 'relatedLinkTitle']);
+            App::frontend()->template()->addValue('RelatedLinkURL', [Template::class, 'relatedLinkURL']);
+            App::frontend()->template()->addValue('RelatedLinkImage', [Template::class, 'relatedLinkImage']);
 
             if (My::settings()->automatic_content) {
-                dcCore::app()->addBehavior('publicEntryAfterContent', [Behaviors::class, 'publicEntryAfterContent']);
+                App::behavior()->addBehavior('publicEntryAfterContent', [Behaviors::class, 'publicEntryAfterContent']);
             }
 
-            dcCore::app()->addBehavior('initWidgets', [Widgets::class, 'initWidgets']);
-            dcCore::app()->addBehavior('initDefaultWidgets', [Widgets::class, 'initDefaultWidgets']);
+            App::behavior()->addBehavior('initWidgets', [Widgets::class, 'initWidgets']);
+            App::behavior()->addBehavior('initDefaultWidgets', [Widgets::class, 'initDefaultWidgets']);
         }
 
         return true;

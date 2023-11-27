@@ -15,7 +15,7 @@ namespace Dotclear\Plugin\relatedLinks;
 
 use Dotclear\Core\Backend\Menus;
 use Dotclear\Core\Process;
-use dcCore;
+use Dotclear\App;
 
 class Backend extends Process
 {
@@ -33,14 +33,14 @@ class Backend extends Process
         if (My::settings()->active) {
             My::addBackendMenuItem(Menus::MENU_BLOG);
 
-            dcCore::app()->addBehavior('adminPostForm', [Behaviors::class, 'adminPostForm']);
-            dcCore::app()->addBehavior('adminPostHeaders', [Behaviors::class, 'adminPostHeaders']);
-            dcCore::app()->addBehavior('adminAfterPostCreate', [Behaviors::class, 'setRelatedLinks']);
-            dcCore::app()->addBehavior('adminAfterPostUpdate', [Behaviors::class, 'setRelatedLinks']);
-            dcCore::app()->addBehavior('adminPopupPosts', [Behaviors::class, 'adminPopupPosts']);
+            App::behavior()->addBehavior('adminPostForm', [Behaviors::class, 'adminPostForm']);
+            App::behavior()->addBehavior('adminPostHeaders', [Behaviors::class, 'adminPostHeaders']);
+            App::behavior()->addBehavior('adminAfterPostCreate', [Behaviors::class, 'setRelatedLinks']);
+            App::behavior()->addBehavior('adminAfterPostUpdate', [Behaviors::class, 'setRelatedLinks']);
+            App::behavior()->addBehavior('adminPopupPosts', [Behaviors::class, 'adminPopupPosts']);
 
-            dcCore::app()->addBehavior('initWidgets', [Widgets::class, 'initWidgets']);
-            dcCore::app()->addBehavior('initDefaultWidgets', [Widgets::class, 'initDefaultWidgets']);
+            App::behavior()->addBehavior('initWidgets', [Widgets::class, 'initWidgets']);
+            App::behavior()->addBehavior('initDefaultWidgets', [Widgets::class, 'initDefaultWidgets']);
         }
 
         return true;

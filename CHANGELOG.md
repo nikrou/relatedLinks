@@ -1,3 +1,7 @@
+# relatedLinks 1.6.0 - 2023-11-27
+
+- Adapt plugin for dotclear 2.28
+
 # relatedLinks 1.5.2 - 2023-10-29
 
 - links not displayed on public pages

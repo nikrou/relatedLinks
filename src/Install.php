@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\relatedLinks;
 
+use Exception;
 use Dotclear\Core\Process;
 use Dotclear\Database\Structure;
-use dcCore;
+use Dotclear\App;
 
 class Install extends Process
 {
@@ -30,15 +31,15 @@ class Install extends Process
             return false;
         }
 
-        $new_version = dcCore::app()->plugins->moduleInfo(My::id(), 'version');
-        $old_version = dcCore::app()->getVersion(My::id());
+        $new_version = App::plugins()->moduleInfo(My::id(), 'version');
+        $old_version = App::version()->getVersion(My::id());
 
         if (version_compare((string) $old_version, $new_version, '>=')) {
             return true;
         }
 
         try {
-            $s = new Structure(dcCore::app()->con, dcCore::app()->prefix);
+            $s = new Structure(App::con(), App::con()->prefix());
             $s->related_link
             ->id ('bigint', 0, false)
             ->blog_id ('varchar', 32, false)
@@ -51,14 +52,14 @@ class Install extends Process
             $s->related_link->reference('fk_related_link_blog', 'blog_id', 'blog', 'blog_id', 'cascade', 'cascade');
             $s->related_link->reference('fk_related_link_post', 'post_id', 'post', 'post_id', 'cascade', 'cascade');
 
-            $si = new Structure(dcCore::app()->con, dcCore::app()->prefix);
+            $si = new Structure(App::con(), App::con()->prefix());
             $changes = $si->synchronize($s);
 
             My::settings()->put('active', false, 'boolean', 'Related Links plugin activated?', false);
             My::settings()->put('automatic_content', true, 'boolean', 'Add related links content automatically?', false);
             My::settings()->put('content_with_image', false, 'boolean', 'Add images to related links automatically?', false);
-        } catch (\Exception $e) {
-            dcCore::app()->error->add($e->getMessage());
+        } catch (Exception $e) {
+            App::error()->add($e->getMessage());
         }
 
         return true;

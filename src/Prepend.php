@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\relatedLinks;
 
-use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Process;
 
 class Prepend extends Process
@@ -29,10 +29,10 @@ class Prepend extends Process
             return false;
         }
 
-        dcCore::app()->rest->addFunction('addRelatedLink', [RestMethods::class, 'addRelatedLink']);
-        dcCore::app()->rest->addFunction('removeRelatedLink', [RestMethods::class, 'removeRelatedLink']);
-        dcCore::app()->rest->addFunction('removeRelatedLinks', [RestMethods::class, 'removeRelatedLinks']);
-        dcCore::app()->rest->addFunction('getRelatedLinks', [RestMethods::class, 'getRelatedLinks']);
+        App::rest()->addFunction('addRelatedLink', [RestMethods::class, 'addRelatedLink']);
+        App::rest()->addFunction('removeRelatedLink', [RestMethods::class, 'removeRelatedLink']);
+        App::rest()->addFunction('removeRelatedLinks', [RestMethods::class, 'removeRelatedLinks']);
+        App::rest()->addFunction('getRelatedLinks', [RestMethods::class, 'getRelatedLinks']);
 
         return true;
     }
