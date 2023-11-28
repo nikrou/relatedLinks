@@ -17,6 +17,7 @@ use Exception;
 use Dotclear\Core\Backend\Page;
 use Dotclear\App;
 use Dotclear\Database\Cursor;
+use Dotclear\Database\MetaRecord;
 use form;
 
 class Behaviors
@@ -39,13 +40,13 @@ class Behaviors
         return My::jsLoad('popup.js');
     }
 
-    public static function adminPostForm($post): void
+    public static function adminPostForm(?MetaRecord $post): void
     {
         $related_links = null;
         $related_links_ids = '';
 
         if ($post !== null) {
-            $manager = new RelatedLinks((int) $post->getPostId());
+            $manager = new RelatedLinks((int) $post->post_id);
             $related_links = $manager->getList();
             $ids = [];
             while ($related_links->fetch()) {

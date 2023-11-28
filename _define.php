@@ -17,7 +17,7 @@ $this->registerModule(
     "related Links",	// Name
     "Add related links from a post",	// Description
     "Nicolas Roudaire",	// Author
-    '1.6.0',	// Version
+    '1.6.1',	// Version
     [
         'permissions' => App::auth()->makePermissions([Auth::PERMISSION_CONTENT_ADMIN, Pages::PERMISSION_PAGES]),
         'type' => 'plugin',

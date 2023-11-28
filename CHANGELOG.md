@@ -1,3 +1,7 @@
+# relatedLinks 1.6.1 - 2023-11-28
+
+- Fix issue accessing post properties in adminPostForm behavior. Thanks to [Tomek](https://github.com/franck-tomek)
+
 # relatedLinks 1.6.0 - 2023-11-27
 
 - Adapt plugin for dotclear 2.28
